@@ -16,28 +16,30 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-
+<?import javafx.scene.chart.ScatterChart?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 
 <AnchorPane prefHeight="600.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Ue3.Controller">
 	<children>
 
-		<Pane layoutX="356.0" layoutY="147.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+		<Pane fx:id="chartContainer" layoutY="0"  layoutX="300.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Line endX="200.0" layoutX="100.0" layoutY="200.0" startX="-100.0" />
-            <Line endY="-200.0" layoutX="0" layoutY="100.0" startY="100.0" />
+            <ScatterChart fx:id="scatterChart" title="Cars" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+  				<xAxis>
+    				<NumberAxis side="LEFT" />
+    			</xAxis>
+  				<yAxis>
+    				<NumberAxis side="LEFT" />
+  				</yAxis>
+		</ScatterChart>
+		
         
-          <Label fx:id="WeightLabel" layoutX="-80.0" layoutY="-100.0" text="Weight in kg" />
-            <Label fx:id="AccelerationLabel" layoutX="300.0" layoutY="200.0" text="Consumption in  " />
-            <Polygon fx:id="polygonLeft" fill="DODGERBLUE" layoutX="100.0" layoutY="100.0" stroke="BLACK" strokeType="INSIDE" visible="false">
-               <points>
-                  <Double fx:value="-50.0" />
-                  <Double fx:value="40.0" />
-                  <Double fx:value="50.0" />
-                  <Double fx:value="40.0" />
-                  <Double fx:value="0.0" />
-                  <Double fx:value="-60.0" />
-               </points>
-            </Polygon>
+          	<Label fx:id="yLabel" layoutX="0.0" layoutY="10.0" text="Weight in kg" />
+            <Label fx:id="Label" layoutX="440.0" layoutY="380.0" text="Acceleration in  m/s" />
+
          </children>
   			
       	</Pane>
@@ -46,14 +48,15 @@
 			<Label text="FilterBy"/>
 			<ComboBox fx:id="filterOptions"/>
     		<MenuButton fx:id="axisOptions" text="Axis Option"/>
-    		
-    		<Label text="Legende"/>
-    		<Label text="Square: Europe"/>
-    		<Label text="Circle: Japan"/>
-    		<Label text="Dreick: Amerika"/>
-    		<Label text="Color: Manufacturer "/>
-    		<Label text="Color Saturation: Acceleration "/>
-    		<Label text="Size: Hubraum"/>
+    		<VBox>
+    			<Label text="Legende"/>
+    			<Label text="Square: Europe"/>
+    			<Label text="Circle: Japan"/>
+    			<Label text="Dreick: Amerika"/>
+    			<Label text="Color: Manufacturer "/>
+    			<Label text="Color Saturation: Acceleration "/>
+    			<Label text="Size: Hubraum"/>
+    		</VBox>
 		</children>
 	</VBox>
 	

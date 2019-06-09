@@ -39,21 +39,26 @@ public class Controller {
 	
 	public Label CylinderLabel;
 	
-	private LineChart linechart;
+	private ScatterChart<Number, Number> scatterChart;
+	
+	private String labelWeight = "Weight in kg";
+	private String labelConsumption = "Consumption in mpg";
+	
 	
 	public void initialize() {	
 		final NumberAxis xAxis = new NumberAxis(0, 10, 1);
 	    final NumberAxis yAxis = new NumberAxis(-100, 500, 100);        
-	    final ScatterChart<Number,Number> sc = new ScatterChart<Number,Number>(xAxis,yAxis);
-	    xAxis.setLabel("Acceleration in m/s");                
-	    yAxis.setLabel("Wight in kg");
-	    sc.setTitle("Cars Overview");
-	    
-	    
+	    /*
+	    	scatterChart =  new ScatterChart(xAxis, yAxis);         
+	    	scatterChart.getXAxis().setLabel(labelConsumption);
+	    	scatterChart.getYAxis().setLabel(labelWeight);
+	    */
 	    
 	    //Todo add filteritems and addOnaction
 	    MenuItem filterItem1 = new MenuItem("Country");
 	    filterOptions.getItems().add("America");
+	    filterOptions.getItems().add("Europe");
+	    filterOptions.getItems().add("Japan");
 	    
 	    MenuItem menuItem1 = new MenuItem("Weight/Consumption");
         MenuItem menuItem2 = new MenuItem("Acceleration/Consumption in mpg");
