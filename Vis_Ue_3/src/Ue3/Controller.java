@@ -2,8 +2,6 @@ package Ue3;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -14,9 +12,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -34,44 +29,48 @@ public class Controller {
 	public Label WeightLabel;
 	public Label ConsumptionLabel;
 	
-	public MenuButton filterOptions;
-	public MenuButton axisOptions;
-	
 	public Label CylinderLabel;
 	
 	private LineChart linechart;
 	
-	public void initialize() {	
+	private String[][] fullList = new String[407][11];
+	
+	public void initialize() {
+	
+		
 		final NumberAxis xAxis = new NumberAxis(0, 10, 1);
 	    final NumberAxis yAxis = new NumberAxis(-100, 500, 100);        
 	    final ScatterChart<Number,Number> sc = new ScatterChart<Number,Number>(xAxis,yAxis);
 	    xAxis.setLabel("Acceleration in m/s");                
 	    yAxis.setLabel("Wight in kg");
 	    sc.setTitle("Cars Overview");
-	    
-	    
-	    
-	    //Todo add filteritems and addOnaction
-	    MenuItem filterItem1 = new MenuItem("Country");
-	    filterOptions.getItems().add(filterItem1);
-	    
-	    MenuItem menuItem1 = new MenuItem("Weight/Consumption");
-        MenuItem menuItem2 = new MenuItem("Acceleration/Consumption in mpg");
-        MenuItem menuItem3 = new MenuItem("Weight/Horsepower");
-        axisOptions.getItems().add(menuItem1);
-        axisOptions.getItems().add(menuItem2);
-        axisOptions.getItems().add(menuItem3);
-        
-        
-        menuItem3.setOnAction(event -> {
-            System.out.println("Option 3 selected via Lambda");
-        });
-        //TODO add onAction to menuitems
-	}
 	
-	 @FXML
-	 public void buttonClicked(Event e){
-	        System.out.println("Button clicked");
-	 }
+	    ObservableList<String> items = FXCollections.observableArrayList();
+        ObservableList<String> origins = FXCollections.observableArrayList();
+
+        String csvFile = "/Users/jannikschmitz/Downloads/cars.csv";
+        String line = "";
+        String cvsSplitBy = ";";
+
+        //csv to array
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+
+            int i = 0;
+            while ((line = br.readLine()) != null) {
+
+                fullList[i] = line.split(cvsSplitBy);
+
+                items.add(i, fullList[i][0]);
+                System.out.println("Country [code= " + Arrays.toString(fullList[i]));
+                i++;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+		
+		
+	}
 
 }
