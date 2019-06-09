@@ -11,7 +11,7 @@ public class Car {
 	private int weight = 0;
 	private double mpg = 0.0;
 	private int horsepower = 0;
-	private int displacement = 0;
+	private double displacement = 0;
 	private double acceleration = 0.0;
 	private int cylinders = 0;
 
@@ -19,8 +19,9 @@ public class Car {
 		
 	}
 	
-	public Car(String name, String manufacturer, String origin, int modelYear, int weight, double mpg,
-			int horsepower, int displacement, double acceleration, int cylinders) {
+	public Car(String name, String manufacturer, String origin, 
+			int modelYear, int weight, double mpg,
+			int horsepower, double displacement, double acceleration, int cylinders) {
 		super();
 		this.name = name;
 		this.manufacturer = manufacturer;
@@ -92,11 +93,11 @@ public class Car {
 		this.horsepower = horsepower;
 	}
 
-	public int getDisplacement() {
+	public double getDisplacement() {
 		return displacement;
 	}
 
-	public void setDisplacement(int displacement) {
+	public void setDisplacement(double displacement) {
 		this.displacement = displacement;
 	}
 

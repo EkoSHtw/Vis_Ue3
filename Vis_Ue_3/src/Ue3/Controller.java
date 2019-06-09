@@ -21,8 +21,10 @@ import javafx.scene.layout.Pane;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.StringTokenizer;
 
 
 public class Controller {
@@ -46,7 +48,9 @@ public class Controller {
 	
 	public Pane chartContainer;
 	
-	private String[][] carList = new String[407][11];
+	private String[][] tempcarList = new String[407][11];
+	
+	private ArrayList caList = new ArrayList();
 	
 	public void initialize() {	
 		final NumberAxis xAxis = new NumberAxis(0, 10, 1);
@@ -92,16 +96,31 @@ public class Controller {
 	            while ((line = br.readLine()) != null) {
 
 	                // use comma as separator
-	                carList[i] = line.split(cvsSplitBy);
-
-	                items.add(i, carList[i][0]);
-	                System.out.println("Country [code= " + Arrays.toString(carList[i]));
+	               String[] s = line.split(cvsSplitBy)[0].split("\\t");
+	             
+	               	if(i > 0) {
+	                Car newCar = new Car();
+	                newCar.setName(s[0]);
+	                newCar.setManufacturer(s[1]);
+	                newCar.setOrigin(s[9]);
+	                newCar.setAcceleration(Double.parseDouble((!s[7].equals("NA")? s[7]:"0.0")));
+	                newCar.setCylinders(Integer.parseInt((!s[3].equals("NA")? s[3]:"0")));
+	                newCar.setDisplacement(Double.parseDouble((!s[4].equals("NA")? s[4]:"0")));
+	                newCar.setHorsepower(Integer.parseInt((!s[5].equals("NA")? s[5]:"0")));
+	                newCar.setModelYear(Integer.parseInt((!s[8].equals("NA")? s[8]:"0" )));
+	                newCar.setMpg(Double.parseDouble((!s[2].equals("NA")? s[2]:"0.0")));
+	                newCar.setWeight(Integer.parseInt((!s[6].equals("NA")? s[6]:"0" )));
+	               	}
+	 
 	                i++;
 	            }
 
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
+	        
+	        
+	        
 	}
 	
 	 @FXML
