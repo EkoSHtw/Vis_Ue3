@@ -32,13 +32,10 @@
     				<NumberAxis side="LEFT" />
     			</xAxis>
   				<yAxis>
-    				<NumberAxis side="LEFT" />
+    				<NumberAxis side="BOTTOM" />
   				</yAxis>
 		</ScatterChart>
-		
-        
-          	<Label fx:id="yLabel" layoutX="0.0" layoutY="10.0" text="Weight in kg" />
-            <Label fx:id="Label" layoutX="440.0" layoutY="380.0" text="Acceleration in  m/s" />
+
 
          </children>
   			

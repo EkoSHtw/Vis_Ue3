@@ -16,7 +16,7 @@ import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-
+import javafx.scene.layout.Pane;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -39,20 +39,21 @@ public class Controller {
 	
 	public Label CylinderLabel;
 	
-	private ScatterChart<Number, Number> scatterChart;
+	public ScatterChart<Number, Number> scatterChart;
 	
 	private String labelWeight = "Weight in kg";
 	private String labelConsumption = "Consumption in mpg";
 	
+	public Pane chartContainer;
 	
 	public void initialize() {	
 		final NumberAxis xAxis = new NumberAxis(0, 10, 1);
 	    final NumberAxis yAxis = new NumberAxis(-100, 500, 100);        
-	    /*
-	    	scatterChart =  new ScatterChart(xAxis, yAxis);         
-	    	scatterChart.getXAxis().setLabel(labelConsumption);
-	    	scatterChart.getYAxis().setLabel(labelWeight);
-	    */
+	    
+	          
+	    scatterChart.getXAxis().setLabel(labelConsumption);
+	    scatterChart.getYAxis().setLabel(labelWeight);
+	        
 	    
 	    //Todo add filteritems and addOnaction
 	    MenuItem filterItem1 = new MenuItem("Country");
