@@ -46,6 +46,8 @@ public class Controller {
 	
 	public Pane chartContainer;
 	
+	private String[][] carList = new String[407][11];
+	
 	public void initialize() {	
 		final NumberAxis xAxis = new NumberAxis(0, 10, 1);
 	    final NumberAxis yAxis = new NumberAxis(-100, 500, 100);        
@@ -54,6 +56,7 @@ public class Controller {
 	    scatterChart.getXAxis().setLabel(labelConsumption);
 	    scatterChart.getYAxis().setLabel(labelWeight);
 	        
+	    readCSV();
 	    
 	    //Todo add filteritems and addOnaction
 	    MenuItem filterItem1 = new MenuItem("Country");
@@ -72,7 +75,33 @@ public class Controller {
         menuItem3.setOnAction(event -> {
             System.out.println("Option 3 selected via Lambda");
         });
-        //TODO add onAction to menuitems
+
+	}
+	
+	private void readCSV() {
+		
+			ObservableList<String> items = FXCollections.observableArrayList();
+			ObservableList<String> origins = FXCollections.observableArrayList();
+		    String csvFile = "C:\\Users\\User\\eclipse-workspace\\Ue3\\cars.csv";
+	        String line = "";
+	        String cvsSplitBy = ";";
+
+	        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+
+	            int i = 0;
+	            while ((line = br.readLine()) != null) {
+
+	                // use comma as separator
+	                carList[i] = line.split(cvsSplitBy);
+
+	                items.add(i, carList[i][0]);
+	                System.out.println("Country [code= " + Arrays.toString(carList[i]));
+	                i++;
+	            }
+
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
 	}
 	
 	 @FXML
