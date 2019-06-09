@@ -61,7 +61,7 @@ public class Controller {
                 fullList[i] = line.split(cvsSplitBy);
 
                 items.add(i, fullList[i][0]);
-                System.out.println("Country [code= " + Arrays.toString(fullList[i]));
+                System.out.println("" + Arrays.toString(fullList[i]));
                 i++;
             }
 
