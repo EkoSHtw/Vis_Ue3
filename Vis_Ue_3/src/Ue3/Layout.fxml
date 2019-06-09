@@ -14,18 +14,20 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 
 
-<GridPane fx:controller="Ue3.Controller" 
-    xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-<padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
-<Pane layoutX="356.0" layoutY="147.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+<AnchorPane prefHeight="600.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Ue3.Controller">
+	<children>
+
+		<Pane layoutX="356.0" layoutY="147.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Line endX="200.0" layoutX="100.0" layoutY="100.0" startX="-100.0" />
-            <Line endY="-300.0" layoutX="0" layoutY="100.0" startY="0" />
+            <Line endX="200.0" layoutX="100.0" layoutY="200.0" startX="-100.0" />
+            <Line endY="-200.0" layoutX="0" layoutY="100.0" startY="100.0" />
         
-          <Label fx:id="weightLabel" layoutX="-80.0" layoutY="-200.0" text="Weight in kg" />
-            <Label fx:id="WeightLabel" layoutX="300.0" layoutY="100.0" text="mpg" />
+          <Label fx:id="WeightLabel" layoutX="-80.0" layoutY="-100.0" text="Weight in kg" />
+            <Label fx:id="AccelerationLabel" layoutX="300.0" layoutY="200.0" text="Acceleration m/s" />
             <Polygon fx:id="polygonLeft" fill="DODGERBLUE" layoutX="100.0" layoutY="100.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                <points>
                   <Double fx:value="-50.0" />
@@ -36,9 +38,16 @@
                   <Double fx:value="-60.0" />
                </points>
             </Polygon>
-        
          </children>
-         
-      </Pane>
-      
-</GridPane>
+  			
+      	</Pane>
+<VBox layoutX="100.0" layoutY="14.0"  spacing="20" prefHeight="200.0" prefWidth="200.0">
+		<children>
+			<MenuButton fx:id="filterOptions" text="FilterBy"/>
+    		<MenuButton fx:id="axisOptions" text="Axis Option"/>
+		</children>
+	</VBox>
+      	
+  
+    </children>
+</AnchorPane>
