@@ -9,15 +9,73 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import java.lang.Double?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.chart.ScatterChart?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 
-<GridPane fx:controller="Ue3.Controller" 
-    xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-<padding><Insets top="25" right="25" bottom="10" left="25"/></padding>
+<AnchorPane prefHeight="600.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Ue3.Controller">
+	<children>
 
-  <VBox spacing="20">
-    <children>
-        <Label text="Line 1"/>
-        <Label text="Line 2"/>
-    </children>       
-</VBox>
-</GridPane>
+		<Pane fx:id="chartContainer" layoutY="0"  layoutX="300.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ScatterChart fx:id="scatterChart" title="Cars" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+  				<xAxis>
+    				<NumberAxis side="LEFT" />
+    			</xAxis>
+  				<yAxis>
+    				<NumberAxis side="BOTTOM" />
+  				</yAxis>
+		</ScatterChart>
+
+
+         </children>
+  			
+      	</Pane>
+	<VBox layoutX="100.0" layoutY="14.0"  spacing="20" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
+		<children>
+			<Label text="FilterBy"/>
+			<ComboBox fx:id="filterOptions"/>
+    		<MenuButton fx:id="axisOptions" text="Axis Option"/>
+    		<VBox>
+    			<Label text="Legende"/>
+    			<Label text="Square: Europe"/>
+    			<Label text="Circle: Japan"/>
+    			<Label text="Dreick: Amerika"/>
+    			<Label text="Color: Manufacturer "/>
+    			<Label text="Color Saturation: Acceleration "/>
+    			<Label text="Size: Hubraum"/>
+    		</VBox>
+		</children>
+	</VBox>
+	
+	<VBox layoutX="100.0" layoutY="400.0"  spacing="20" prefHeight="500.0" prefWidth="700.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
+		<children>
+			<HBox>
+				<Label text="Name: "/>
+    			<Label text="Year: "/>
+    		</HBox>
+    		<VBox>
+    			<Label text="Manufacturer:"/>
+    			<Label text="Country:"/>
+    			<Label text="Horsepower: "/>
+    			<Label text="Consumption:"/>
+    			<Label text="Cylinder: "/>
+    			<Label text="Acceleration: "/>
+    			<Label text="Weight "/>
+    			<Label text="Displacement"/>
+    		</VBox>
+		</children>
+	</VBox>
+   
+  
+    </children>
+</AnchorPane>
