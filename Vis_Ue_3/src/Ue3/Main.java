@@ -1,4 +1,4 @@
-package src;
+package Ue3;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,16 +13,18 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        Parent root = FXMLLoader.load(getClass().getResource("Ue3.fxml"));
-        primaryStage.setTitle("Übung 3");
-        primaryStage.setScene(new Scene(root, 950, 600));
-        primaryStage.show();
+    	  Parent root = FXMLLoader.load(getClass().getResource("Layout.fxml"));
+    	    
+          Scene scene = new Scene(root, 300, 275);
+      
+          primaryStage.setTitle("FXML Welcome");
+          primaryStage.setScene(scene);
+          primaryStage.show();
     }
 
 
 
     public static void main(String[] args) {
         launch(args);
-
     }
 }
