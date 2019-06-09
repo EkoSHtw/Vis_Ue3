@@ -27,7 +27,7 @@
             <Line endY="-200.0" layoutX="0" layoutY="100.0" startY="100.0" />
         
           <Label fx:id="WeightLabel" layoutX="-80.0" layoutY="-100.0" text="Weight in kg" />
-            <Label fx:id="AccelerationLabel" layoutX="300.0" layoutY="200.0" text="Acceleration m/s" />
+            <Label fx:id="AccelerationLabel" layoutX="300.0" layoutY="200.0" text="Consumption in  " />
             <Polygon fx:id="polygonLeft" fill="DODGERBLUE" layoutX="100.0" layoutY="100.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                <points>
                   <Double fx:value="-50.0" />
@@ -41,13 +41,41 @@
          </children>
   			
       	</Pane>
-<VBox layoutX="100.0" layoutY="14.0"  spacing="20" prefHeight="200.0" prefWidth="200.0">
+	<VBox layoutX="100.0" layoutY="14.0"  spacing="20" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
 		<children>
-			<MenuButton fx:id="filterOptions" text="FilterBy"/>
+			<Label text="FilterBy"/>
+			<ComboBox fx:id="filterOptions"/>
     		<MenuButton fx:id="axisOptions" text="Axis Option"/>
+    		
+    		<Label text="Legende"/>
+    		<Label text="Square: Europe"/>
+    		<Label text="Circle: Japan"/>
+    		<Label text="Dreick: Amerika"/>
+    		<Label text="Color: Manufacturer "/>
+    		<Label text="Color Saturation: Acceleration "/>
+    		<Label text="Size: Hubraum"/>
 		</children>
 	</VBox>
-      	
+	
+	<VBox layoutX="100.0" layoutY="400.0"  spacing="20" prefHeight="500.0" prefWidth="700.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
+		<children>
+			<HBox>
+				<Label text="Name: "/>
+    			<Label text="Year: "/>
+    		</HBox>
+    		<VBox>
+    			<Label text="Manufacturer:"/>
+    			<Label text="Country:"/>
+    			<Label text="Horsepower: "/>
+    			<Label text="Consumption:"/>
+    			<Label text="Cylinder: "/>
+    			<Label text="Acceleration: "/>
+    			<Label text="Weight "/>
+    			<Label text="Displacement"/>
+    		</VBox>
+		</children>
+	</VBox>
+   
   
     </children>
 </AnchorPane>

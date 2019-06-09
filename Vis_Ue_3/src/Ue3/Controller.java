@@ -34,7 +34,7 @@ public class Controller {
 	public Label WeightLabel;
 	public Label ConsumptionLabel;
 	
-	public MenuButton filterOptions;
+	public ComboBox filterOptions;
 	public MenuButton axisOptions;
 	
 	public Label CylinderLabel;
@@ -53,7 +53,7 @@ public class Controller {
 	    
 	    //Todo add filteritems and addOnaction
 	    MenuItem filterItem1 = new MenuItem("Country");
-	    filterOptions.getItems().add(filterItem1);
+	    filterOptions.getItems().add("America");
 	    
 	    MenuItem menuItem1 = new MenuItem("Weight/Consumption");
         MenuItem menuItem2 = new MenuItem("Acceleration/Consumption in mpg");
