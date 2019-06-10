@@ -43,13 +43,10 @@
 	<VBox layoutX="100.0" layoutY="14.0"  spacing="20" prefHeight="200.0" prefWidth="200.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
 		<children>
 			<Label text="FilterBy"/>
-			<ComboBox fx:id="filterOptions"/>
+			<MenuButton fx:id="filterOptions"/>
     		<MenuButton fx:id="axisOptions" text="Axis Option"/>
     		<VBox>
     			<Label text="Legende"/>
-    			<Label text="Square: Europe"/>
-    			<Label text="Circle: Japan"/>
-    			<Label text="Dreick: Amerika"/>
     			<Label text="Color: Manufacturer "/>
     			<Label text="Color Saturation: Acceleration "/>
     			<Label text="Size: Hubraum"/>

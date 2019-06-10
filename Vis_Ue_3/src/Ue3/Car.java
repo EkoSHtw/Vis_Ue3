@@ -8,7 +8,7 @@ public class Car {
 	private String manufacturer= "";
 	private String origin = "";
 	private int modelYear = 0;
-	private int weight = 0;
+	private double weight = 0;
 	private double mpg = 0.0;
 	private int horsepower = 0;
 	private double displacement = 0;
@@ -69,11 +69,11 @@ public class Car {
 		this.modelYear = modelYear;
 	}
 
-	public int getWeight() {
+	public double getWeight() {
 		return weight;
 	}
 
-	public void setWeight(int weight) {
+	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 
