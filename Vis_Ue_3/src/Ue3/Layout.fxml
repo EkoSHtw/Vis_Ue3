@@ -23,6 +23,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Slider?>
 
+
 <AnchorPane prefHeight="600.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Ue3.Controller">
 	<children>
 
@@ -30,10 +31,10 @@
          <children>
             <ScatterChart fx:id="scatterChart" title="Cars" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
   				<xAxis>
-    				<NumberAxis side="LEFT" />
+    				<NumberAxis fx:id="yAxis" side="LEFT" />
     			</xAxis>
   				<yAxis>
-    				<NumberAxis side="BOTTOM" />
+    				<NumberAxis fx:id="xAxis" side="BOTTOM" />
   				</yAxis>
 		</ScatterChart>
          </children>
@@ -76,6 +77,11 @@
     			<Slider fx:id="minSliderY"/>
     			<Label text="Max Y-Axis Slider"/>
     			<Slider fx:id="maxSliderY"/>
+    			
+    			<Label text="Min Year Slider"/>
+    			<Slider fx:id="minSliderYear"/>
+    			<Label text="Max Year Slider"/>
+    			<Slider fx:id="maxSliderYear"/>
     		</VBox>
 		</children>
 	</VBox>
