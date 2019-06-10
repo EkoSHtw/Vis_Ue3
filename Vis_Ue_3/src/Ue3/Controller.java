@@ -93,10 +93,13 @@ public class Controller {
 	private static final String ALLMANUFACTURER = "All";
 	private String displayedManufacturer = "All";
 	
+	private int selectedAxis = 0; 
+	
 	
 	public void initialize() {		          
 	 
 	    scatterChart.setAnimated(false);
+	    scatterChart.setLegendVisible(false);
 	    readCSV();
 	    splitByCountry();
 	    
