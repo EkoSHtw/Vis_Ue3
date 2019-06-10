@@ -59,11 +59,11 @@ public class Controller {
 	public MenuButton axisOptions;
 	
 	
-	
 	public ScatterChart<Number, Number> scatterChart;
 	
 	private String labelWeight = "Weight in kg";
-	private String labelConsumption = "Consumption in mpg";
+	private String labelConsumption = "Consumption in l/km";
+	private String labelHorsepower = "Horsepower";
 	
 	public Pane chartContainer;
 	
@@ -78,9 +78,15 @@ public class Controller {
 	XYChart.Series<Number, Number> dataSeriesAmerica = new XYChart.Series();
 	XYChart.Series<Number, Number> dataSeriesJapan = new XYChart.Series();
 	
+	private static int ENABLE_ALL = 0;
+	private static int ENABLE_EUROPE = 1;
+	private static int ENABLE_AMERICA = 2;
+	private static int ENABLE_JAPAN = 3;
+	private int enabled = 0;
+	
+	
 	public void initialize() {		          
-	    scatterChart.getXAxis().setLabel(labelConsumption);
-	    scatterChart.getYAxis().setLabel(labelWeight);
+	 
 	    scatterChart.setAnimated(false);
 	    readCSV();
 	    splitByCountry();
@@ -123,14 +129,16 @@ public class Controller {
         	setAxisHorsepowerConsumption();
         });
         MenuItem menuItem3 = new MenuItem("Weight/Horsepower");
+        menuItem3.setOnAction(event -> {
+            setAxisWeightHorsepower();
+        });
+        
         axisOptions.getItems().add(menuItem1);
         axisOptions.getItems().add(menuItem2);
         axisOptions.getItems().add(menuItem3);
         
         
-        menuItem3.setOnAction(event -> {
-            System.out.println("Option 3 selected via Lambda");
-        });
+       
 	}
 	
 	private void clearAllData() {
@@ -149,21 +157,42 @@ public class Controller {
 	private void displayOnlyOneCountry(String country) {
 		
 		clearAllData();
+		
+		
 		switch(country) {
-		case "europe": scatterChart.getData().add(dataSeriesEurope); break;
-		case "america": scatterChart.getData().add(dataSeriesAmerica); break;
-		case "japan": scatterChart.getData().add(dataSeriesJapan); break;
+		case "europe": 
+			scatterChart.getData().add(dataSeriesEurope); 
+			enabled = ENABLE_EUROPE;
+			break;
+		case "america": 
+			scatterChart.getData().add(dataSeriesAmerica); 
+			enabled = ENABLE_AMERICA;
+			break;
+		case "japan": 
+			scatterChart.getData().add(dataSeriesJapan); 
+			enabled = ENABLE_JAPAN;
+			break;
 		default: 
 			scatterChart.getData().add(dataSeriesEurope); 
 			scatterChart.getData().add(dataSeriesAmerica);
 			scatterChart.getData().add(dataSeriesJapan); 
-		
+			enabled = ENABLE_ALL;
 		}	
 	}
 	
 	private void setAxisMPGWeight() {
 		
 		clearAllData();
+		dataSeriesEurope.getData().clear();
+		dataSeriesEurope.getData().removeAll(europe);
+		dataSeriesAmerica.getData().clear();
+		dataSeriesAmerica.getData().removeAll(america);
+		dataSeriesJapan.getData().clear();
+		dataSeriesJapan.getData().removeAll(japan);
+		
+		scatterChart.getXAxis().setLabel(labelConsumption);
+		scatterChart.getYAxis().setLabel(labelWeight);
+		
 		
 		for ( Car c: europe) {
 			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
@@ -178,6 +207,7 @@ public class Controller {
 			dataSeriesEurope.getData().add(data);
 		}
 		
+	
 		
 		for ( Car c: japan) {
 			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
@@ -211,39 +241,45 @@ public class Controller {
 			dataSeriesAmerica.getData().add(data);
 		}
 		
-		
-		scatterChart.getData().add(dataSeriesEurope);
-		scatterChart.getData().add(dataSeriesJapan);
-		scatterChart.getData().add(dataSeriesAmerica);
+		if(enabled == ENABLE_ALL || enabled == ENABLE_EUROPE) scatterChart.getData().add(dataSeriesEurope);
+		if(enabled == ENABLE_ALL || enabled == ENABLE_JAPAN)scatterChart.getData().add(dataSeriesJapan);
+		if(enabled == ENABLE_ALL || enabled == ENABLE_AMERICA)scatterChart.getData().add(dataSeriesAmerica);
 		
 	}
 	
 	private void setAxisHorsepowerConsumption() {
 		
 		clearAllData();
+		dataSeriesEurope.getData().clear();
+		dataSeriesEurope.getData().removeAll(europe);
+		dataSeriesAmerica.getData().clear();
+		dataSeriesAmerica.getData().removeAll(america);
+		dataSeriesJapan.getData().clear();
+		dataSeriesJapan.getData().removeAll(japan);
+		
+		scatterChart.getXAxis().setLabel(labelConsumption);
+		scatterChart.getYAxis().setLabel(labelHorsepower);
+		
+		
 		for ( Car c: europe) {
 			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 			
 			String colorString = new String();
-			
 			colorString = toHex(c.getManufacturer());
 			
-			
 			data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
-			
+			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			dataSeriesEurope.getData().add(data);
 		}
-		
 		
 		for ( Car c: japan) {
 			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 			
 			String colorString = new String();
-			
 			colorString = toHex(c.getManufacturer());
 			
-			
 			data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
+			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			dataSeriesJapan.getData().add(data);
 		}
 
@@ -252,18 +288,74 @@ public class Controller {
 			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 			
 			String colorString = new String();
-			
 			colorString = toHex(c.getManufacturer());
 			
-			
 			data.setNode(triangle(colorConverter(colorString, c.getAcceleration()), c.getCylinders()));
+			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			dataSeriesAmerica.getData().add(data);
 		}
 		
-		scatterChart.getData().add(dataSeriesEurope);
-		scatterChart.getData().add(dataSeriesJapan);
-		scatterChart.getData().add(dataSeriesAmerica);
+
+		if(enabled == ENABLE_ALL || enabled == ENABLE_EUROPE) scatterChart.getData().add(dataSeriesEurope);
+		if(enabled == ENABLE_ALL || enabled == ENABLE_JAPAN)scatterChart.getData().add(dataSeriesJapan);
+		if(enabled == ENABLE_ALL || enabled == ENABLE_AMERICA)scatterChart.getData().add(dataSeriesAmerica);
 	}
+	
+private void setAxisWeightHorsepower() {
+		
+		clearAllData();
+		dataSeriesEurope.getData().clear();
+		dataSeriesEurope.getData().removeAll(europe);
+		dataSeriesAmerica.getData().clear();
+		dataSeriesAmerica.getData().removeAll(america);
+		dataSeriesJapan.getData().clear();
+		dataSeriesJapan.getData().removeAll(japan);
+		
+		scatterChart.getXAxis().setLabel(labelHorsepower);
+		scatterChart.getYAxis().setLabel(labelWeight);
+		
+		
+		for ( Car c: europe) {
+			XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
+			
+			String colorString = new String();
+			colorString = toHex(c.getManufacturer());
+			
+			data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
+			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+			dataSeriesEurope.getData().add(data);
+		}
+		
+		for ( Car c: japan) {
+			XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
+			
+			String colorString = new String();
+			colorString = toHex(c.getManufacturer());
+			
+			data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
+			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+			dataSeriesJapan.getData().add(data);
+		}
+
+		
+		for ( Car c: america) {
+			XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
+			
+			String colorString = new String();
+			colorString = toHex(c.getManufacturer());
+			
+			data.setNode(triangle(colorConverter(colorString, c.getAcceleration()), c.getCylinders()));
+			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+			dataSeriesAmerica.getData().add(data);
+		}
+		
+
+		if(enabled == ENABLE_ALL || enabled == ENABLE_EUROPE) scatterChart.getData().add(dataSeriesEurope);
+		if(enabled == ENABLE_ALL || enabled == ENABLE_JAPAN)scatterChart.getData().add(dataSeriesJapan);
+		if(enabled == ENABLE_ALL || enabled == ENABLE_AMERICA)scatterChart.getData().add(dataSeriesAmerica);
+	}
+	
+	
 	
 	private Node triangle(Color color, int cylinders) {
 		
@@ -373,7 +465,6 @@ public class Controller {
 				break;
 			}
 		}
-		
 	
 		dataSeriesEurope.setName("Europe");	
 		dataSeriesJapan.setName("japan");
@@ -385,7 +476,7 @@ public class Controller {
 		
 			ObservableList<String> items = FXCollections.observableArrayList();
 			ObservableList<String> origins = FXCollections.observableArrayList();
-		    String csvFile = "/Users/jannikschmitz/Downloads/cars.csv";
+		    String csvFile = "C:\\\\Users\\\\User\\\\eclipse-workspace\\\\Ue3\\\\cars.csv";
 	        String line = "";
 	        String cvsSplitBy = ";";
 
@@ -401,12 +492,12 @@ public class Controller {
 	               		newCar.setName(s[0]);
 	               		newCar.setManufacturer(s[1]);
 	               		newCar.setOrigin(s[9]);
-	               		newCar.setAcceleration(Double.parseDouble((!s[7].equals("NA")? s[7]:"0.0")));
+	               		newCar.setAcceleration((Double.parseDouble((!s[7].equals("NA")? s[7]:"0.0"))));
 	               		newCar.setCylinders(Integer.parseInt((!s[3].equals("NA")? s[3]:"0")));
-	               		newCar.setDisplacement(Double.parseDouble((!s[4].equals("NA")? s[4]:"0.0")));
+	               		newCar.setDisplacement((Double.parseDouble((!s[4].equals("NA")? s[4]:"0.0"))* 16.387));
 	               		newCar.setHorsepower(Integer.parseInt((!s[5].equals("NA")? s[5]:"0")));
 	               		newCar.setModelYear(Integer.parseInt((!s[8].equals("NA")? s[8]:"0" )));
-	               		newCar.setMpg(Double.parseDouble((!s[2].equals("NA")? s[2]:"0.0")));
+	               		newCar.setMpg((Double.parseDouble((!s[2].equals("NA")? s[2]:"0.0")) * 0.425144));
 	               		newCar.setWeight((Double.parseDouble((!s[6].equals("NA")? s[6]:"0" )) * 0.453592));
 	               		
 	               		
@@ -425,13 +516,13 @@ public class Controller {
 		carLabel.setText("Model: " + c.getName() + "       ");
 		modelYearLabel.setText("Model Year: " + c.getModelYear());
 		manufacturerLabel.setText("Manufacturer: " + c.getManufacturer());
-		accelerationLabel.setText("Acceleration: " + c.getAcceleration());
-		displacementLabel.setText("Displacement: " + c.getDisplacement());
+		accelerationLabel.setText("Acceleration: " + (c.getAcceleration() * 1.609) + " m/s");
+		displacementLabel.setText("Displacement: " + c.getDisplacement() + " ccm");
 		countryLabel.setText("Origin: " + c.getOrigin());
 		cylinderLabel.setText("Cylinder " +  c.getCylinders());
-		consumptionLabel.setText("mpg: " + c.getMpg());
+		consumptionLabel.setText("Consumption: " + c.getMpg() + " l/km");
 		horsepowerLabel.setText("Horsepower: " + c.getHorsepower());
-		weightLabel.setText("Weight:" + c.getWeight());
+		weightLabel.setText("Weight:" + c.getWeight() + " km");
 	}
 	
 	 @FXML
