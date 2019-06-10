@@ -31,11 +31,10 @@ import java.util.StringTokenizer;
 
 
 
-//TODO set xy axis numbers
 //TODO 1. Add Shape as well as onMouseClick to American cars by adding a Node
 //TODO 2. Add ColorCoding to data
-//TODO 3. Add Size to data accoring to data
-//TODO 4. add fix filters
+//TODO 3. Add Size to data according to data
+//TODO 4. add filters and set xy axis label when applying filter
 //TODO 5. Add some kind or range slider or zoom
 
 public class Controller {
