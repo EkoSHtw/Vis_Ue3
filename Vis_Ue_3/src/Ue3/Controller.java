@@ -154,6 +154,7 @@ public class Controller {
 		
 		maxSliderYear.setMin(minYear);
 		maxSliderYear.setMax(maxYear);
+		maxSliderYear.valueProperty().setValue(maxYear);
 		maxSliderYear.valueProperty().addListener((observable, oldValue, newValue) -> {
 	           reload();
 	    });
@@ -239,7 +240,13 @@ public class Controller {
 
 		scatterChart.getXAxis().setLabel(labelConsumption);
 		scatterChart.getYAxis().setLabel(labelWeight);
-		//xAxis.setLowerBound(minSliderYear.valueProperty().intValue());
+		
+		double yMin = 3000;
+		double xMin = 3000;
+		double yMax = 0;
+		double xMax = 0;
+		//xAxis.setLowerBound(minSliderX.valueProperty().intValue());
+		//yAxis.setLowerBound(minSliderY.valueProperty().intValue());
 		
 
 		for (Car c : europe) {
@@ -253,7 +260,22 @@ public class Controller {
 						 	&& (consumptionPercent >= minSliderX.valueProperty().doubleValue() && consumptionPercent <= maxSliderX.valueProperty().doubleValue())
 					&& (weightPercent >= minSliderY.valueProperty().doubleValue() && weightPercent <= maxSliderY.valueProperty().doubleValue())
 						 */
-						
+				//if(c.getMpg() > 0 && c.getWeight() > 0) {
+				/*if(c.getMpg() < xMin) {
+					xMin = c.getMpg(); 
+				}
+				if(c.getMpg() > xMax) {
+					xMin = c.getMpg(); 
+				}
+				
+				if(c.getWeight() < yMin) {
+					yMin = c.getWeight(); 
+				}
+				
+				if(c.getWeight() > yMax) {
+					xMax = c.getWeight(); 
+				}
+				*/
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getWeight());
 
 				String colorString = new String();
@@ -265,9 +287,16 @@ public class Controller {
 				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 
 				dataSeriesEurope.getData().add(data);
+				//}
 			}
 		}
-
+		
+		/*
+		xAxis.setLowerBound(xMin);
+		yAxis.setLowerBound(yMin);
+		xAxis.setUpperBound(xMax);
+		yAxis.setUpperBound(yMax);
+		*/
 		for (Car c : japan) {
 			if ((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer()))
 					&& (filteredYear == 0 || filteredYear == c.getModelYear())
