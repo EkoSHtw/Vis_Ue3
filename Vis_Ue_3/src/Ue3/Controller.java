@@ -215,6 +215,7 @@ public class Controller {
 		
 		for ( Car c: america) {
 			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
+			data.setNode(triangle());
 			dataSeriesAmerica.getData().add(data);
 		}
 		
