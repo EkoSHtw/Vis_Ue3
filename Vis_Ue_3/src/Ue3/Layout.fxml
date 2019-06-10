@@ -49,7 +49,7 @@
     			<Label text="Legende"/>
     			<Label text="Color: Manufacturer "/>
     			<Label text="Color Saturation: Acceleration "/>
-    			<Label text="Size: Hubraum"/>
+    			<Label text="Size: Cylinders"/>
     		</VBox>
 		</children>
 	</VBox>

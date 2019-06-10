@@ -35,7 +35,7 @@ import java.util.StringTokenizer;
 
 //TODO 1. Add Shape as well as onMouseClick to American cars by adding a Node ///// DONE - PLS Change Diamond to Triangle in Legende
 //TODO 2. Add ColorCoding to data ///// DONE - HEXtoRGB does the Job. Some Problems from Java Lib to JavaFX Lib fixed with ConverterFunction 
-//TODO 3. Add Size to data according to data
+//TODO 3. Add Size to data according to data ///// DONE - With function "cylinderToSize"
 //TODO 4. add filters and set xy axis label when applying filter
 //TODO 5. Add some kind or range slider or zoom
 
@@ -171,8 +171,8 @@ public class Controller {
 			String colorString = new String(); 
 			
 			colorString = toHex(c.getManufacturer()); // Get Manufacturer Hex for Color
-					
-			data.setNode(new Rectangle(10, 10, colorConverter(colorString))); // convert It to JavaFX Color
+			
+			data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString))); // convert It to JavaFX Color
 			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			
 			dataSeriesEurope.getData().add(data);
@@ -186,7 +186,7 @@ public class Controller {
 			
 			colorString = toHex(c.getManufacturer());	
 			
-			data.setNode(new Circle(5, colorConverter(colorString)));
+			data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString)));
 			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			
 			dataSeriesJapan.getData().add(data);
@@ -200,8 +200,10 @@ public class Controller {
 			String colorString = new String();
 			
 			colorString = toHex(c.getManufacturer());
+			
+			System.out.print(c.getCylinders());
 					
-			data.setNode(triangle(colorConverter(colorString)));
+			data.setNode(triangle(colorConverter(colorString), c.getCylinders()));
 			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			
 			dataSeriesAmerica.getData().add(data);
@@ -225,7 +227,7 @@ public class Controller {
 			colorString = toHex(c.getManufacturer());
 			
 			
-			data.setNode(new Rectangle(10, 10, colorConverter(colorString)));
+			data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString)));
 			
 			dataSeriesEurope.getData().add(data);
 		}
@@ -239,7 +241,7 @@ public class Controller {
 			colorString = toHex(c.getManufacturer());
 			
 			
-			data.setNode(new Circle(5, colorConverter(colorString)));
+			data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString)));
 			dataSeriesJapan.getData().add(data);
 		}
 
@@ -252,7 +254,7 @@ public class Controller {
 			colorString = toHex(c.getManufacturer());
 			
 			
-			data.setNode(triangle(colorConverter(colorString)));
+			data.setNode(triangle(colorConverter(colorString), c.getCylinders()));
 			dataSeriesAmerica.getData().add(data);
 		}
 		
@@ -261,11 +263,16 @@ public class Controller {
 		scatterChart.getData().add(dataSeriesAmerica);
 	}
 	
-	private Node triangle(Color color) {
+	private Node triangle(Color color, int cylinders) {
 		
 		// Create the Triangle
         Polygon triangle = new Polygon();
-        triangle.getPoints().addAll(6.25, 0.0,  0.0, 6.25, 12.5, 6.25);    
+        triangle.getPoints().addAll(6.25*cylinderToSize(cylinders)
+        		, 0.0,
+        		0.0, 
+        		6.25*cylinderToSize(cylinders), 
+        		12.5*cylinderToSize(cylinders), 
+        		6.25*cylinderToSize(cylinders));    
         triangle.setFill(color);
         //triangle.setStroke(Color.GREEN);
 		return triangle;
@@ -291,7 +298,6 @@ public class Controller {
 	
 	private javafx.scene.paint.Color colorConverter(String colorString){
 	
-
 	java.awt.Color awtColor = hex2Rgb(colorString) ;
 	int r = awtColor.getRed();
 	int g = awtColor.getGreen();
@@ -302,6 +308,46 @@ public class Controller {
 	return fxColor;
 	
 	}
+	
+	
+	private double cylinderToSize(int cylinder) {
+		
+		double multSize = 1;
+		
+
+		if (cylinder== 4) {
+			
+			multSize = 1.2;
+					
+		}
+
+		if (cylinder== 5) {
+			
+			multSize = 1.4;
+					
+		}
+		if (cylinder== 6) {
+			
+			multSize = 1.6;
+					
+		}
+		if (cylinder== 7) {
+			
+			multSize = 1.8;
+					
+		}
+		if (cylinder== 8) {
+			
+			multSize = 2;
+					
+		}
+		
+		
+		return multSize;
+		
+		
+	}
+	
 	
 	private void splitByCountry() {
 		europe = new ArrayList<Car>();
