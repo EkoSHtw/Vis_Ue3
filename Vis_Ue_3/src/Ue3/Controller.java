@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
 //TODO 1. Add Shape as well as onMouseClick to American cars by adding a Node ///// DONE - PLS Change Diamond to Triangle in Legende
 //TODO 2. Add ColorCoding to data ///// DONE - HEXtoRGB does the Job. Some Problems from Java Lib to JavaFX Lib fixed with ConverterFunction 
 //TODO 3. Add Size to data according to data ///// DONE - With function "cylinderToSize"
-//TODO 4. add filters and set xy axis label when applying filter
+//TODO 4. add filters and set xy axis label when applying filter //DONE
 //TODO 5. Add some kind or range slider or zoom
 
 public class Controller {
