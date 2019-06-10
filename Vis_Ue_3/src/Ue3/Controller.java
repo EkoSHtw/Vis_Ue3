@@ -172,7 +172,7 @@ public class Controller {
 			
 			colorString = toHex(c.getManufacturer()); // Get Manufacturer Hex for Color
 			
-			data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString))); // convert It to JavaFX Color
+			data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration()))); // convert It to JavaFX Color
 			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			
 			dataSeriesEurope.getData().add(data);
@@ -186,7 +186,7 @@ public class Controller {
 			
 			colorString = toHex(c.getManufacturer());	
 			
-			data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString)));
+			data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
 			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			
 			dataSeriesJapan.getData().add(data);
@@ -202,8 +202,10 @@ public class Controller {
 			colorString = toHex(c.getManufacturer());
 			
 			System.out.print(c.getCylinders());
+			
+			System.out.print(c.getAcceleration());
 					
-			data.setNode(triangle(colorConverter(colorString), c.getCylinders()));
+			data.setNode(triangle(colorConverter(colorString, c.getAcceleration()), c.getCylinders()));
 			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			
 			dataSeriesAmerica.getData().add(data);
@@ -227,7 +229,7 @@ public class Controller {
 			colorString = toHex(c.getManufacturer());
 			
 			
-			data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString)));
+			data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
 			
 			dataSeriesEurope.getData().add(data);
 		}
@@ -241,7 +243,7 @@ public class Controller {
 			colorString = toHex(c.getManufacturer());
 			
 			
-			data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString)));
+			data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
 			dataSeriesJapan.getData().add(data);
 		}
 
@@ -254,7 +256,7 @@ public class Controller {
 			colorString = toHex(c.getManufacturer());
 			
 			
-			data.setNode(triangle(colorConverter(colorString), c.getCylinders()));
+			data.setNode(triangle(colorConverter(colorString, c.getAcceleration()), c.getCylinders()));
 			dataSeriesAmerica.getData().add(data);
 		}
 		
@@ -274,7 +276,7 @@ public class Controller {
         		12.5*cylinderToSize(cylinders), 
         		6.25*cylinderToSize(cylinders));    
         triangle.setFill(color);
-        //triangle.setStroke(Color.GREEN);
+        //triangle.setStroke(Color.BLACK);
 		return triangle;
 		
 	}
@@ -296,14 +298,14 @@ public class Controller {
 	            Integer.valueOf( colorStr.substring( 5, 7 ), 16 ) );
 	}
 	
-	private javafx.scene.paint.Color colorConverter(String colorString){
+	private javafx.scene.paint.Color colorConverter(String colorString, double acceleration){
 	
 	java.awt.Color awtColor = hex2Rgb(colorString) ;
 	int r = awtColor.getRed();
 	int g = awtColor.getGreen();
 	int b = awtColor.getBlue();
 	int a = awtColor.getAlpha();
-	double opacity = a / 255.0 ;
+	double opacity = (a - (acceleration * 10)) / 255.0 ;
 	javafx.scene.paint.Color fxColor = javafx.scene.paint.Color.rgb(r, g, b, opacity);
 	return fxColor;
 	
