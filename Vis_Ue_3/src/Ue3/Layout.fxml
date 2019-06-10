@@ -70,7 +70,7 @@
 		</children>
 	</VBox>
 	
-	<VBox layoutX="400.0" layoutY="400.0"  spacing="20" prefHeight="180.0" prefWidth="400.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
+	<VBox layoutX="370.0" layoutY="400.0"  spacing="20" prefHeight="180.0" prefWidth="400.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
 		<children>
 			<HBox>
 				<Label fx:id="carLabel" text="Name: "/>

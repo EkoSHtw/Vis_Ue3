@@ -20,6 +20,7 @@ import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 
 import java.io.BufferedReader;
@@ -59,6 +60,10 @@ public class Controller {
 	public MenuButton filterOptionsManufacturer;
 	public MenuButton axisOptions;
 	
+	public Slider minSliderX;
+	public Slider maxSliderX;
+	public Slider minSliderY;
+	public Slider maxSliderY;
 	
 	public ScatterChart<Number, Number> scatterChart;
 	
@@ -563,10 +568,5 @@ private void setAxisWeightHorsepower() {
 		horsepowerLabel.setText("Horsepower: " + c.getHorsepower());
 		weightLabel.setText("Weight:" + c.getWeight() + " km");
 	}
-	
-	 @FXML
-	 public void buttonClicked(Event e){
-	        System.out.println("Button clicked");
-	 }
 
 }
