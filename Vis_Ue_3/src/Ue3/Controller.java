@@ -56,6 +56,7 @@ public class Controller {
 	public Label cylinderLabel;
 	
 	public MenuButton filterOptions;
+	public MenuButton filterOptionsManufacturer;
 	public MenuButton axisOptions;
 	
 	
@@ -72,7 +73,7 @@ public class Controller {
 	private ArrayList<Car> europe = new ArrayList<Car>();
 	private ArrayList<Car> america = new ArrayList<Car>();
 	private ArrayList<Car> japan = new ArrayList<Car>();
-	private ArrayList<Car> displayedList = new ArrayList<>();	
+	private ArrayList<String> manufacturerList = new ArrayList<>();	
 	
 	XYChart.Series<Number, Number> dataSeriesEurope = new XYChart.Series();
 	XYChart.Series<Number, Number> dataSeriesAmerica = new XYChart.Series();
@@ -83,6 +84,9 @@ public class Controller {
 	private static int ENABLE_AMERICA = 2;
 	private static int ENABLE_JAPAN = 3;
 	private int enabled = 0;
+	
+	private static final String ALLMANUFACTURER = "All";
+	private String displayedManufacturer = "All";
 	
 	
 	public void initialize() {		          
@@ -96,6 +100,7 @@ public class Controller {
 	    filterItem.setOnAction(event -> {
 	    	displayOnlyOneCountry("default");
 	    });
+	    
 	    MenuItem filterItem1 = new MenuItem("Europe");
 	    filterItem1.setOnAction(event -> {
 	    	displayOnlyOneCountry("europe");
@@ -195,50 +200,58 @@ public class Controller {
 		
 		
 		for ( Car c: europe) {
-			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
 			
-			String colorString = new String(); 
+			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+				XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
 			
-			colorString = toHex(c.getManufacturer()); // Get Manufacturer Hex for Color
+				String colorString = new String(); 
 			
-			data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration()))); // convert It to JavaFX Color
-			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+				colorString = toHex(c.getManufacturer()); // Get Manufacturer Hex for Color
 			
-			dataSeriesEurope.getData().add(data);
+				data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration()))); // convert It to JavaFX Color
+				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+			
+				dataSeriesEurope.getData().add(data);
+			}
 		}
 		
 	
 		
 		for ( Car c: japan) {
-			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
 			
-			String colorString = new String();
+			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+				XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
 			
-			colorString = toHex(c.getManufacturer());	
+				String colorString = new String();
 			
-			data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
-			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+				colorString = toHex(c.getManufacturer());	
 			
-			dataSeriesJapan.getData().add(data);
+				data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
+				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+			
+				dataSeriesJapan.getData().add(data);
+			}
 		}
 		
 
 	
 		for ( Car c: america) {
-			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
+			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+				XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
 			
-			String colorString = new String();
+				String colorString = new String();
 			
-			colorString = toHex(c.getManufacturer());
+				colorString = toHex(c.getManufacturer());
 			
-			System.out.print(c.getCylinders());
+				System.out.print(c.getCylinders());
 			
-			System.out.print(c.getAcceleration());
+				System.out.print(c.getAcceleration());
 					
-			data.setNode(triangle(colorConverter(colorString, c.getAcceleration()), c.getCylinders()));
-			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+				data.setNode(triangle(colorConverter(colorString, c.getAcceleration()), c.getCylinders()));
+				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			
-			dataSeriesAmerica.getData().add(data);
+				dataSeriesAmerica.getData().add(data);
+			}
 		}
 		
 		if(enabled == ENABLE_ALL || enabled == ENABLE_EUROPE) scatterChart.getData().add(dataSeriesEurope);
@@ -262,37 +275,43 @@ public class Controller {
 		
 		
 		for ( Car c: europe) {
-			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
+			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 			
-			String colorString = new String();
-			colorString = toHex(c.getManufacturer());
+				String colorString = new String();
+				colorString = toHex(c.getManufacturer());
 			
-			data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
-			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
-			dataSeriesEurope.getData().add(data);
+				data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
+				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+				dataSeriesEurope.getData().add(data);
+			}
 		}
 		
 		for ( Car c: japan) {
-			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
+			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {	
+				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 			
-			String colorString = new String();
-			colorString = toHex(c.getManufacturer());
+				String colorString = new String();
+				colorString = toHex(c.getManufacturer());
 			
-			data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
-			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
-			dataSeriesJapan.getData().add(data);
+				data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
+				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+				dataSeriesJapan.getData().add(data);
+			}
 		}
 
 		
 		for ( Car c: america) {
-			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
+			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 			
-			String colorString = new String();
-			colorString = toHex(c.getManufacturer());
+				String colorString = new String();
+				colorString = toHex(c.getManufacturer());
 			
-			data.setNode(triangle(colorConverter(colorString, c.getAcceleration()), c.getCylinders()));
-			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
-			dataSeriesAmerica.getData().add(data);
+				data.setNode(triangle(colorConverter(colorString, c.getAcceleration()), c.getCylinders()));
+				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+				dataSeriesAmerica.getData().add(data);
+			}
 		}
 		
 
@@ -316,37 +335,43 @@ private void setAxisWeightHorsepower() {
 		
 		
 		for ( Car c: europe) {
-			XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
+			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 			
-			String colorString = new String();
-			colorString = toHex(c.getManufacturer());
+				String colorString = new String();
+				colorString = toHex(c.getManufacturer());
 			
-			data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
-			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
-			dataSeriesEurope.getData().add(data);
+				data.setNode(new Rectangle(10*cylinderToSize(c.getCylinders()), 10*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
+				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+				dataSeriesEurope.getData().add(data);
+			}
 		}
 		
 		for ( Car c: japan) {
-			XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
+			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 			
-			String colorString = new String();
-			colorString = toHex(c.getManufacturer());
+				String colorString = new String();
+				colorString = toHex(c.getManufacturer());
 			
-			data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
-			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
-			dataSeriesJapan.getData().add(data);
+				data.setNode(new Circle(5*cylinderToSize(c.getCylinders()), colorConverter(colorString, c.getAcceleration())));
+				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+				dataSeriesJapan.getData().add(data);
+			}
 		}
 
 		
 		for ( Car c: america) {
-			XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
+			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 			
-			String colorString = new String();
-			colorString = toHex(c.getManufacturer());
+				String colorString = new String();
+				colorString = toHex(c.getManufacturer());
 			
-			data.setNode(triangle(colorConverter(colorString, c.getAcceleration()), c.getCylinders()));
-			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
-			dataSeriesAmerica.getData().add(data);
+				data.setNode(triangle(colorConverter(colorString, c.getAcceleration()), c.getCylinders()));
+				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+				dataSeriesAmerica.getData().add(data);
+			}
 		}
 		
 
@@ -392,15 +417,14 @@ private void setAxisWeightHorsepower() {
 	
 	private javafx.scene.paint.Color colorConverter(String colorString, double acceleration){
 	
-	java.awt.Color awtColor = hex2Rgb(colorString) ;
-	int r = awtColor.getRed();
-	int g = awtColor.getGreen();
-	int b = awtColor.getBlue();
-	int a = awtColor.getAlpha();
-	double opacity = (a - (acceleration * 10)) / 255.0 ;
-	javafx.scene.paint.Color fxColor = javafx.scene.paint.Color.rgb(r, g, b, opacity);
-	return fxColor;
-	
+		java.awt.Color awtColor = hex2Rgb(colorString) ;
+		int r = awtColor.getRed();
+		int g = awtColor.getGreen();
+		int b = awtColor.getBlue();
+		int a = awtColor.getAlpha();
+		double opacity = (a - (acceleration * 10)) / 255.0 ;
+		javafx.scene.paint.Color fxColor = javafx.scene.paint.Color.rgb(r, g, b, opacity);
+		return fxColor;
 	}
 	
 	
@@ -479,7 +503,14 @@ private void setAxisWeightHorsepower() {
 		    String csvFile = "C:\\\\Users\\\\User\\\\eclipse-workspace\\\\Ue3\\\\cars.csv";
 	        String line = "";
 	        String cvsSplitBy = ";";
-
+	        
+	        MenuItem filterItem = new MenuItem(ALLMANUFACTURER);
+	        displayedManufacturer = filterItem.getText();
+    	      filterItem.setOnAction(event -> {
+    	    	 displayedManufacturer = filterItem.getText();
+    	      });
+    	      filterOptionsManufacturer.getItems().add(filterItem);
+	        
 	        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
 
 	            int i = 0;
@@ -500,10 +531,16 @@ private void setAxisWeightHorsepower() {
 	               		newCar.setMpg((Double.parseDouble((!s[2].equals("NA")? s[2]:"0.0")) * 0.425144));
 	               		newCar.setWeight((Double.parseDouble((!s[6].equals("NA")? s[6]:"0" )) * 0.453592));
 	               		
-	               		
+	               		if(!manufacturerList.contains(newCar.getManufacturer())) {
+	               			manufacturerList.add(newCar.getManufacturer());
+	               		  MenuItem filterItem1 = new MenuItem(newCar.getManufacturer());
+	              	      filterItem1.setOnAction(event -> {
+	              	    	displayedManufacturer = filterItem1.getText();
+	              	      });
+	              	      filterOptionsManufacturer.getItems().add(filterItem1);
+	               		}
 	               		carList.add(newCar);
 	               	}
-	 
 	                i++;
 	            }
 
@@ -511,6 +548,15 @@ private void setAxisWeightHorsepower() {
 	            e.printStackTrace();
 	        }
 	}
+	
+	private void filterManufacturer(String name) {
+		clearAllData();
+		
+		if(enabled == ENABLE_ALL || enabled == ENABLE_EUROPE) scatterChart.getData().add(dataSeriesEurope);
+		if(enabled == ENABLE_ALL || enabled == ENABLE_JAPAN)scatterChart.getData().add(dataSeriesJapan);
+		if(enabled == ENABLE_ALL || enabled == ENABLE_AMERICA)scatterChart.getData().add(dataSeriesAmerica);
+	}
+	
 	
 	public void setupBottomView(Car c) {
 		carLabel.setText("Model: " + c.getName() + "       ");
