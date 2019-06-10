@@ -433,31 +433,24 @@ private void setAxisWeightHorsepower() {
 		double multSize = 1;
 		
 
-		if (cylinder== 4) {
-			
-			multSize = 1.2;
-					
+		if (cylinder == 4) {
+			multSize = 1.2;					
 		}
 
-		if (cylinder== 5) {
-			
-			multSize = 1.4;
-					
+		else if (cylinder == 5) {
+			multSize = 1.4;			
 		}
-		if (cylinder== 6) {
-			
+		
+		else if (cylinder == 6) {
 			multSize = 1.6;
-					
 		}
-		if (cylinder== 7) {
-			
+		
+		else if (cylinder == 7) {
 			multSize = 1.8;
-					
 		}
-		if (cylinder== 8) {
-			
-			multSize = 2;
-					
+		
+		else if (cylinder == 8) {
+			multSize = 2;			
 		}
 		
 		

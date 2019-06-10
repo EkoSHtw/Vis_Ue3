@@ -21,6 +21,7 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Slider?>
 
 <AnchorPane prefHeight="600.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Ue3.Controller">
 	<children>
@@ -48,14 +49,28 @@
     		<MenuButton fx:id="axisOptions" text="Axis Option"/>
     		<VBox>
     			<Label text="Legende"/>
+    			<Label text="Europe: Square"/>
+    			<Label text="America: Triangle"/>
+    			<Label text="Japan: Circle"/>
     			<Label text="Color: Manufacturer "/>
     			<Label text="Color Saturation: Acceleration "/>
     			<Label text="Size: Cylinders"/>
     		</VBox>
+    		<VBox>
+    			<Label text="Min X-Axis Slider"/>
+    			<Slider fx:id="minSliderX"/>
+    			<Label text="Max X-Axis Slider"/>
+    			<Slider fx:id="maxSliderX"/>
+    		
+    			<Label text="Min Y-Axis Slider"/>
+    			<Slider fx:id="minSliderY"/>
+    			<Label text="Max Y-Axis Slider"/>
+    			<Slider fx:id="maxSliderY"/>
+    		</VBox>
 		</children>
 	</VBox>
 	
-	<VBox layoutX="100.0" layoutY="400.0"  spacing="20" prefHeight="500.0" prefWidth="700.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
+	<VBox layoutX="400.0" layoutY="400.0"  spacing="20" prefHeight="180.0" prefWidth="400.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
 		<children>
 			<HBox>
 				<Label fx:id="carLabel" text="Name: "/>
