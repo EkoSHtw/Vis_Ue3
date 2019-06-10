@@ -55,9 +55,14 @@ public class Controller {
 	public Label weightLabel;
 	public Label consumptionLabel;
 	public Label cylinderLabel;
+	public Label textFilterOrigin;
+	public Label textFilterManufacturer;
+	public Label textFilterYear;
+	public Label textFilterAxis;
 	
 	public MenuButton filterOptions;
 	public MenuButton filterOptionsManufacturer;
+	public MenuButton filterOptionsYear;
 	public MenuButton axisOptions;
 	
 	public Slider minSliderX;
@@ -92,6 +97,8 @@ public class Controller {
 	
 	private static final String ALLMANUFACTURER = "All";
 	private String displayedManufacturer = "All";
+	private int filteredYear = 0;
+	private ArrayList<Integer> yearList = new ArrayList<>();	
 	
 	private int selectedAxis = 0; 
 	
@@ -106,23 +113,30 @@ public class Controller {
 	    //Todo add filteritems and addOnaction
 	    MenuItem filterItem = new MenuItem("All");
 	    filterItem.setOnAction(event -> {
-	    	displayOnlyOneCountry("default");
+	    	enabled = ENABLE_ALL;
+	    	textFilterOrigin.setText("All");
+			reload();
 	    });
 	    
 	    MenuItem filterItem1 = new MenuItem("Europe");
 	    filterItem1.setOnAction(event -> {
-	    	displayOnlyOneCountry("europe");
+	    	enabled = ENABLE_EUROPE;
+	    	textFilterOrigin.setText("Europe");
+	    	reload();
 	    });
 	    
 	    MenuItem filterItem2 = new MenuItem("America");
 	    filterItem2.setOnAction(event -> {
-	    	displayOnlyOneCountry("america");
+	    	enabled = ENABLE_AMERICA;
+	    	textFilterOrigin.setText("America");
+			reload();
 	    });
 	    
 	    MenuItem filterItem3 = new MenuItem("Japan");
-	 
 	    filterItem3.setOnAction(event -> {
-	    	displayOnlyOneCountry("japan");
+	    	enabled = ENABLE_JAPAN;
+	    	textFilterOrigin.setText("Japan");
+			reload();
 	    });
 	    
 	    
@@ -134,24 +148,24 @@ public class Controller {
 	    
 	    MenuItem menuItem1 = new MenuItem("Weight/Consumption");
 	    menuItem1.setOnAction(event -> {
-	    	setAxisMPGWeight();
+	    	selectedAxis = 0;
+	    	reload();
         });
 	    
 	    MenuItem menuItem2 = new MenuItem("Horsepower/Consumption");
         menuItem2.setOnAction(event -> {
-        	setAxisHorsepowerConsumption();
+        	selectedAxis = 1;
+        	reload();
         });
         MenuItem menuItem3 = new MenuItem("Weight/Horsepower");
         menuItem3.setOnAction(event -> {
-            setAxisWeightHorsepower();
+        	selectedAxis = 2;
+            reload();
         });
         
         axisOptions.getItems().add(menuItem1);
         axisOptions.getItems().add(menuItem2);
-        axisOptions.getItems().add(menuItem3);
-        
-        
-       
+        axisOptions.getItems().add(menuItem3);  
 	}
 	
 	private void clearAllData() {
@@ -166,34 +180,9 @@ public class Controller {
 		
 	}
 	
-	
-	private void displayOnlyOneCountry(String country) {
+	private void setAxisConsumptionWeight() {
 		
-		clearAllData();
-		
-		
-		switch(country) {
-		case "europe": 
-			scatterChart.getData().add(dataSeriesEurope); 
-			enabled = ENABLE_EUROPE;
-			break;
-		case "america": 
-			scatterChart.getData().add(dataSeriesAmerica); 
-			enabled = ENABLE_AMERICA;
-			break;
-		case "japan": 
-			scatterChart.getData().add(dataSeriesJapan); 
-			enabled = ENABLE_JAPAN;
-			break;
-		default: 
-			scatterChart.getData().add(dataSeriesEurope); 
-			scatterChart.getData().add(dataSeriesAmerica);
-			scatterChart.getData().add(dataSeriesJapan); 
-			enabled = ENABLE_ALL;
-		}	
-	}
-	
-	private void setAxisMPGWeight() {
+		textFilterAxis.setText("Consumption/Weight");
 		
 		clearAllData();
 		dataSeriesEurope.getData().clear();
@@ -208,8 +197,7 @@ public class Controller {
 		
 		
 		for ( Car c: europe) {
-			
-			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+			if((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) && (filteredYear == 0 || filteredYear == c.getModelYear())) {
 				XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
 			
 				String colorString = new String(); 
@@ -226,8 +214,7 @@ public class Controller {
 	
 		
 		for ( Car c: japan) {
-			
-			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+			if((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) && (filteredYear == 0 || filteredYear == c.getModelYear())) {
 				XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
 			
 				String colorString = new String();
@@ -244,7 +231,7 @@ public class Controller {
 
 	
 		for ( Car c: america) {
-			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+			if((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) && (filteredYear == 0 || filteredYear == c.getModelYear())) {
 				XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
 			
 				String colorString = new String();
@@ -270,6 +257,8 @@ public class Controller {
 	
 	private void setAxisHorsepowerConsumption() {
 		
+		textFilterAxis.setText("Consumption/Horsepower");
+		
 		clearAllData();
 		dataSeriesEurope.getData().clear();
 		dataSeriesEurope.getData().removeAll(europe);
@@ -283,7 +272,7 @@ public class Controller {
 		
 		
 		for ( Car c: europe) {
-			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+			if((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) && (filteredYear == 0 || filteredYear == c.getModelYear())) {
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 			
 				String colorString = new String();
@@ -296,7 +285,7 @@ public class Controller {
 		}
 		
 		for ( Car c: japan) {
-			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {	
+			if((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) && (filteredYear == 0 || filteredYear == c.getModelYear())) {
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 			
 				String colorString = new String();
@@ -310,7 +299,7 @@ public class Controller {
 
 		
 		for ( Car c: america) {
-			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+			if((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) && (filteredYear == 0 || filteredYear == c.getModelYear())) {
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 			
 				String colorString = new String();
@@ -328,7 +317,9 @@ public class Controller {
 		if(enabled == ENABLE_ALL || enabled == ENABLE_AMERICA)scatterChart.getData().add(dataSeriesAmerica);
 	}
 	
-private void setAxisWeightHorsepower() {
+	private void setAxisWeightHorsepower() {
+		
+		textFilterAxis.setText("Horsepower/Weight");
 		
 		clearAllData();
 		dataSeriesEurope.getData().clear();
@@ -343,7 +334,7 @@ private void setAxisWeightHorsepower() {
 		
 		
 		for ( Car c: europe) {
-			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+			if((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) && (filteredYear == 0 || filteredYear == c.getModelYear())) {
 				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 			
 				String colorString = new String();
@@ -356,7 +347,7 @@ private void setAxisWeightHorsepower() {
 		}
 		
 		for ( Car c: japan) {
-			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+			if((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) && (filteredYear == 0 || filteredYear == c.getModelYear())) {
 				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 			
 				String colorString = new String();
@@ -370,7 +361,7 @@ private void setAxisWeightHorsepower() {
 
 		
 		for ( Car c: america) {
-			if(displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) {
+			if((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer())) && (filteredYear == 0 || filteredYear == c.getModelYear())) {
 				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 			
 				String colorString = new String();
@@ -494,7 +485,7 @@ private void setAxisWeightHorsepower() {
 		dataSeriesEurope.setName("Europe");	
 		dataSeriesJapan.setName("japan");
 		dataSeriesAmerica.setName("American");
-		setAxisMPGWeight();
+		setAxisConsumptionWeight();
 	}
 	
 	private void readCSV() {
@@ -509,9 +500,19 @@ private void setAxisWeightHorsepower() {
 	        displayedManufacturer = filterItem.getText();
     	      filterItem.setOnAction(event -> {
     	    	 displayedManufacturer = filterItem.getText();
+    	    	 textFilterManufacturer.setText(filterItem.getText());
+    	    	 reload();
     	      });
-    	      filterOptionsManufacturer.getItems().add(filterItem);
-	        
+    	    filterOptionsManufacturer.getItems().add(filterItem);
+    	    MenuItem filterItem0 = new MenuItem("0");
+     			filterItem0.setOnAction(event -> {
+     				filteredYear = Integer.parseInt(filterItem0.getText());
+     				textFilterYear.setText("All");
+     				reload();
+     			});
+     		filterOptionsYear.getItems().add(filterItem0);
+    	      
+    	      
 	        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
 
 	            int i = 0;
@@ -537,8 +538,21 @@ private void setAxisWeightHorsepower() {
 	               		  MenuItem filterItem1 = new MenuItem(newCar.getManufacturer());
 	              	      filterItem1.setOnAction(event -> {
 	              	    	displayedManufacturer = filterItem1.getText();
-	              	      });
+	              	    	textFilterManufacturer.setText(filterItem1.getText());
+	              	    	reload();
+	              	     });
 	              	      filterOptionsManufacturer.getItems().add(filterItem1);
+	               		}
+	               		
+	               		if(!yearList.contains(newCar.getModelYear())) {
+	               			yearList.add(new Integer(newCar.getModelYear()));
+	               			MenuItem filterItem2 = new MenuItem(newCar.getModelYear() + "");
+	               			filterItem2.setOnAction(event -> {
+	              	    	filteredYear = Integer.parseInt(filterItem2.getText());
+	              	    	textFilterYear.setText(filterItem2.getText());
+	              	    	reload();
+	               		});
+	               			filterOptionsYear.getItems().add(filterItem2);
 	               		}
 	               		carList.add(newCar);
 	               	}
@@ -550,14 +564,17 @@ private void setAxisWeightHorsepower() {
 	        }
 	}
 	
-	private void filterManufacturer(String name) {
-		clearAllData();
-		
-		if(enabled == ENABLE_ALL || enabled == ENABLE_EUROPE) scatterChart.getData().add(dataSeriesEurope);
-		if(enabled == ENABLE_ALL || enabled == ENABLE_JAPAN)scatterChart.getData().add(dataSeriesJapan);
-		if(enabled == ENABLE_ALL || enabled == ENABLE_AMERICA)scatterChart.getData().add(dataSeriesAmerica);
-	}
+
 	
+	public void reload() {
+		
+		switch(selectedAxis) {
+			
+			case 0: setAxisConsumptionWeight(); break;
+			case 1: setAxisHorsepowerConsumption(); break;
+			case 2: setAxisWeightHorsepower(); break;
+		}
+	}
 	
 	public void setupBottomView(Car c) {
 		carLabel.setText("Model: " + c.getName() + "       ");
@@ -570,6 +587,7 @@ private void setAxisWeightHorsepower() {
 		consumptionLabel.setText("Consumption: " + c.getMpg() + " l/km");
 		horsepowerLabel.setText("Horsepower: " + c.getHorsepower());
 		weightLabel.setText("Weight:" + c.getWeight() + " km");
+	
 	}
 
 }
