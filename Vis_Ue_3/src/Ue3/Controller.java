@@ -25,6 +25,7 @@ import javafx.scene.layout.Pane;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -33,7 +34,7 @@ import java.util.StringTokenizer;
 
 
 //TODO 1. Add Shape as well as onMouseClick to American cars by adding a Node ///// DONE - PLS Change Diamond to Triangle in Legende
-//TODO 2. Add ColorCoding to data
+//TODO 2. Add ColorCoding to data ///// DONE - HEXtoRGB does the Job. Some Problems from Java Lib to JavaFX Lib fixed with ConverterFunction 
 //TODO 3. Add Size to data according to data
 //TODO 4. add filters and set xy axis label when applying filter
 //TODO 5. Add some kind or range slider or zoom
@@ -166,16 +167,28 @@ public class Controller {
 		
 		for ( Car c: europe) {
 			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
-			data.setNode(new Rectangle(10, 10, Color.RED));
+			
+			String colorString = new String(); 
+			
+			colorString = toHex(c.getManufacturer()); // Get Manufacturer Hex for Color
+					
+			data.setNode(new Rectangle(10, 10, colorConverter(colorString))); // convert It to JavaFX Color
 			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+			
 			dataSeriesEurope.getData().add(data);
 		}
 		
 		
 		for ( Car c: japan) {
 			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
-			data.setNode(new Circle(5, Color.BURLYWOOD));
+			
+			String colorString = new String();
+			
+			colorString = toHex(c.getManufacturer());	
+			
+			data.setNode(new Circle(5, colorConverter(colorString)));
 			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+			
 			dataSeriesJapan.getData().add(data);
 		}
 		
@@ -183,9 +196,14 @@ public class Controller {
 	
 		for ( Car c: america) {
 			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
-			//TODO add node and onclick
-			data.setNode(triangle());
+			
+			String colorString = new String();
+			
+			colorString = toHex(c.getManufacturer());
+					
+			data.setNode(triangle(colorConverter(colorString)));
 			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+			
 			dataSeriesAmerica.getData().add(data);
 		}
 		
@@ -201,21 +219,40 @@ public class Controller {
 		clearAllData();
 		for ( Car c: europe) {
 			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
-			data.setNode(new Rectangle(5, 5, Color.RED));
+			
+			String colorString = new String();
+			
+			colorString = toHex(c.getManufacturer());
+			
+			
+			data.setNode(new Rectangle(10, 10, colorConverter(colorString)));
+			
 			dataSeriesEurope.getData().add(data);
 		}
 		
 		
 		for ( Car c: japan) {
 			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
-			data.setNode(new Circle(5, Color.RED));
+			
+			String colorString = new String();
+			
+			colorString = toHex(c.getManufacturer());
+			
+			
+			data.setNode(new Circle(5, colorConverter(colorString)));
 			dataSeriesJapan.getData().add(data);
 		}
 
 		
 		for ( Car c: america) {
 			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
-			data.setNode(triangle());
+			
+			String colorString = new String();
+			
+			colorString = toHex(c.getManufacturer());
+			
+			
+			data.setNode(triangle(colorConverter(colorString)));
 			dataSeriesAmerica.getData().add(data);
 		}
 		
@@ -224,17 +261,47 @@ public class Controller {
 		scatterChart.getData().add(dataSeriesAmerica);
 	}
 	
-	private Node triangle() {
+	private Node triangle(Color color) {
 		
 		// Create the Triangle
         Polygon triangle = new Polygon();
-        triangle.getPoints().addAll(6.25, 0.0,  0.0, 6.25, 12.5, 6.25);
-        triangle.setFill(Color.GREEN);
-        triangle.setStroke(Color.GREEN);
+        triangle.getPoints().addAll(6.25, 0.0,  0.0, 6.25, 12.5, 6.25);    
+        triangle.setFill(color);
+        //triangle.setStroke(Color.GREEN);
 		return triangle;
 		
 	}
 	
+	private String toHex(String arg) {
+		  return String.format("%x", new BigInteger(1, arg.getBytes(/*YOUR_CHARSET?*/)));
+
+		}
+	
+	
+	private static java.awt.Color hex2Rgb(String colorStr) {
+	
+			colorStr = colorStr + "0000"; // for smallstrings like "VW"
+				
+		
+	    return new java.awt.Color(
+	            Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
+	            Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
+	            Integer.valueOf( colorStr.substring( 5, 7 ), 16 ) );
+	}
+	
+	private javafx.scene.paint.Color colorConverter(String colorString){
+	
+
+	java.awt.Color awtColor = hex2Rgb(colorString) ;
+	int r = awtColor.getRed();
+	int g = awtColor.getGreen();
+	int b = awtColor.getBlue();
+	int a = awtColor.getAlpha();
+	double opacity = a / 255.0 ;
+	javafx.scene.paint.Color fxColor = javafx.scene.paint.Color.rgb(r, g, b, opacity);
+	return fxColor;
+	
+	}
 	
 	private void splitByCountry() {
 		europe = new ArrayList<Car>();
