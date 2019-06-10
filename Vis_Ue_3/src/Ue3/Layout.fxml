@@ -57,18 +57,18 @@
 	<VBox layoutX="100.0" layoutY="400.0"  spacing="20" prefHeight="500.0" prefWidth="700.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
 		<children>
 			<HBox>
-				<Label text="Name: "/>
-    			<Label text="Year: "/>
+				<Label fx:id="carLabel" text="Name: "/>
+    			<Label fx:id="modelYearLabel" text="Model Year: "/>
     		</HBox>
     		<VBox>
-    			<Label text="Manufacturer:"/>
-    			<Label text="Country:"/>
-    			<Label text="Horsepower: "/>
-    			<Label text="Consumption:"/>
-    			<Label text="Cylinder: "/>
-    			<Label text="Acceleration: "/>
-    			<Label text="Weight "/>
-    			<Label text="Displacement"/>
+    			<Label fx:id="manufacturerLabel" text="Manufacturer:"/>
+    			<Label fx:id="countryLabel" text="Origin:"/>
+    			<Label fx:id="horsepowerLabel" text="Horsepower: "/>
+    			<Label fx:id="consumptionLabel" text="Consumption:"/>
+    			<Label fx:id="cylinderLabel" text="Cylinder: "/>
+    			<Label fx:id="accelerationLabel" text="Acceleration: "/>
+    			<Label fx:id="weightLabel" text="Weight "/>
+    			<Label fx:id="displacementLabel" text="Displacement"/>
     		</VBox>
 		</children>
 	</VBox>

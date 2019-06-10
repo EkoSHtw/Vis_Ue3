@@ -30,19 +30,34 @@ import java.util.Objects;
 import java.util.StringTokenizer;
 
 
+
+//TODO set xy axis numbers
+//TODO 1. Add Shape as well as onMouseClick to American cars by adding a Node
+//TODO 2. Add ColorCoding to data
+//TODO 3. Add Size to data accoring to data
+//TODO 4. add fix filters
+//TODO 5. Add some kind or range slider or zoom
+
 public class Controller {
 	
 	public Polygon polygonRight;
 	public Polygon polygonLeft;
-	public Label AccelerationLabel;
-	public Label HorsepowerLabel;
-	public Label WeightLabel;
-	public Label ConsumptionLabel;
+	
+	public Label carLabel;
+	public Label modelYearLabel;
+	public Label manufacturerLabel;
+	public Label countryLabel;
+	public Label displacementLabel;
+	public Label accelerationLabel;
+	public Label horsepowerLabel;
+	public Label weightLabel;
+	public Label consumptionLabel;
+	public Label cylinderLabel;
 	
 	public MenuButton filterOptions;
 	public MenuButton axisOptions;
 	
-	public Label CylinderLabel;
+	
 	
 	public ScatterChart<Number, Number> scatterChart;
 	
@@ -62,14 +77,10 @@ public class Controller {
 	XYChart.Series<Number, Number> dataSeriesAmerica = new XYChart.Series();
 	XYChart.Series<Number, Number> dataSeriesJapan = new XYChart.Series();
 	
-	public void initialize() {	
-		final NumberAxis xAxis = new NumberAxis(0, 10, 1);
-	    final NumberAxis yAxis = new NumberAxis(-100, 500, 100);        
-	    
-	          
+	public void initialize() {		          
 	    scatterChart.getXAxis().setLabel(labelConsumption);
 	    scatterChart.getYAxis().setLabel(labelWeight);
-	        
+	    scatterChart.setAnimated(false);
 	    readCSV();
 	    splitByCountry();
 	    
@@ -102,7 +113,14 @@ public class Controller {
 	    
 	    
 	    MenuItem menuItem1 = new MenuItem("Weight/Consumption");
+	    menuItem1.setOnAction(event -> {
+	    	setAxisMPGWeight();
+        });
+	    
 	    MenuItem menuItem2 = new MenuItem("Horsepower/Consumption");
+        menuItem2.setOnAction(event -> {
+        	setAxisHorsepowerConsumption();
+        });
         MenuItem menuItem3 = new MenuItem("Weight/Horsepower");
         axisOptions.getItems().add(menuItem1);
         axisOptions.getItems().add(menuItem2);
@@ -114,12 +132,22 @@ public class Controller {
         });
 	}
 	
+	private void clearAllData() {
+
+		scatterChart.getData().clear();
+		scatterChart.getData().removeAll(america);
+		scatterChart.getData().removeAll(europe);
+		scatterChart.getData().removeAll(japan);
+		
+		
+		scatterChart.layout();
+		
+	}
 	
 	
-	@SuppressWarnings("unchecked")
 	private void displayOnlyOneCountry(String country) {
 		
-		scatterChart.getData().clear();
+		clearAllData();
 		switch(country) {
 		case "europe": scatterChart.getData().add(dataSeriesEurope); break;
 		case "america": scatterChart.getData().add(dataSeriesAmerica); break;
@@ -130,6 +158,66 @@ public class Controller {
 			scatterChart.getData().add(dataSeriesJapan); 
 		
 		}	
+	}
+	
+	private void setAxisMPGWeight() {
+		
+		clearAllData();
+		
+		for ( Car c: europe) {
+			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
+			data.setNode(new Rectangle(10, 10, Color.RED));
+			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+			dataSeriesEurope.getData().add(data);
+		}
+		
+		
+		for ( Car c: japan) {
+			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
+			data.setNode(new Circle(5, Color.RED));
+			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
+			dataSeriesJapan.getData().add(data);
+		}
+
+
+		for ( Car c: america) {
+			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
+			//TODO add node and onclick
+			dataSeriesAmerica.getData().add(data);
+		}
+		
+		
+		scatterChart.getData().add(dataSeriesEurope);
+		scatterChart.getData().add(dataSeriesJapan);
+		scatterChart.getData().add(dataSeriesAmerica);
+		
+	}
+	
+	private void setAxisHorsepowerConsumption() {
+		
+		clearAllData();
+		for ( Car c: europe) {
+			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
+			data.setNode(new Rectangle(5, 5, Color.RED));
+			dataSeriesEurope.getData().add(data);
+		}
+		
+		
+		for ( Car c: japan) {
+			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
+			data.setNode(new Circle(5, Color.RED));
+			dataSeriesJapan.getData().add(data);
+		}
+
+		
+		for ( Car c: america) {
+			XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
+			dataSeriesAmerica.getData().add(data);
+		}
+		
+		scatterChart.getData().add(dataSeriesEurope);
+		scatterChart.getData().add(dataSeriesJapan);
+		scatterChart.getData().add(dataSeriesAmerica);
 	}
 	
 	private void splitByCountry() {
@@ -156,36 +244,10 @@ public class Controller {
 		}
 		
 	
-		dataSeriesEurope.setName("Europe");
-		
-		for ( Car c: europe) {
-			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
-			data.setNode(new Rectangle(5, 5, Color.RED));
-			dataSeriesEurope.getData().add(data);
-		}
-		
-		
+		dataSeriesEurope.setName("Europe");	
 		dataSeriesJapan.setName("japan");
-		
-		for ( Car c: japan) {
-			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
-			data.setNode(new Circle(5, Color.RED));
-			dataSeriesJapan.getData().add(data);
-		}
-
-		
 		dataSeriesAmerica.setName("American");
-		
-		for ( Car c: america) {
-			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
-			dataSeriesAmerica.getData().add(data);
-		}
-		
-		
-		scatterChart.getData().add(dataSeriesEurope);
-		scatterChart.getData().add(dataSeriesJapan);
-		scatterChart.getData().add(dataSeriesAmerica);
-		
+		setAxisMPGWeight();
 	}
 	
 	private void readCSV() {
@@ -217,7 +279,7 @@ public class Controller {
 	               		newCar.setMpg(Double.parseDouble((!s[2].equals("NA")? s[2]:"0.0")));
 	               		newCar.setWeight((Double.parseDouble((!s[6].equals("NA")? s[6]:"0" )) * 0.453592));
 	               		
-	               		System.out.println(newCar.getWeight());
+	               		
 	               		carList.add(newCar);
 	               	}
 	 
@@ -227,6 +289,19 @@ public class Controller {
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
+	}
+	
+	public void setupBottomView(Car c) {
+		carLabel.setText("Model: " + c.getName() + "       ");
+		modelYearLabel.setText("Model Year: " + c.getModelYear());
+		manufacturerLabel.setText("Manufacturer: " + c.getManufacturer());
+		accelerationLabel.setText("Acceleration: " + c.getAcceleration());
+		displacementLabel.setText("Displacement: " + c.getDisplacement());
+		countryLabel.setText("Origin: " + c.getOrigin());
+		cylinderLabel.setText("Cylinder " +  c.getCylinders());
+		consumptionLabel.setText("mpg: " + c.getMpg());
+		horsepowerLabel.setText("Horsepower: " + c.getHorsepower());
+		weightLabel.setText("Weight:" + c.getWeight());
 	}
 	
 	 @FXML
