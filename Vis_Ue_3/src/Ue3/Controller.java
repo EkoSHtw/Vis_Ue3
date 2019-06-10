@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.TriangleMesh;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -31,7 +32,7 @@ import java.util.StringTokenizer;
 
 
 
-//TODO 1. Add Shape as well as onMouseClick to American cars by adding a Node
+//TODO 1. Add Shape as well as onMouseClick to American cars by adding a Node ///// DONE - PLS Change Diamond to Triangle in Legende
 //TODO 2. Add ColorCoding to data
 //TODO 3. Add Size to data according to data
 //TODO 4. add filters and set xy axis label when applying filter
@@ -173,15 +174,18 @@ public class Controller {
 		
 		for ( Car c: japan) {
 			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
-			data.setNode(new Circle(5, Color.RED));
+			data.setNode(new Circle(5, Color.BURLYWOOD));
 			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			dataSeriesJapan.getData().add(data);
 		}
+		
 
-
+	
 		for ( Car c: america) {
 			XYChart.Data data = new XYChart.Data( c.getMpg(), c.getWeight());
 			//TODO add node and onclick
+			data.setNode(triangle());
+			data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 			dataSeriesAmerica.getData().add(data);
 		}
 		
@@ -219,6 +223,18 @@ public class Controller {
 		scatterChart.getData().add(dataSeriesAmerica);
 	}
 	
+	private Node triangle() {
+		
+		// Create the Triangle
+        Polygon triangle = new Polygon();
+        triangle.getPoints().addAll(6.25, 0.0,  0.0, 6.25, 12.5, 6.25);
+        triangle.setFill(Color.GREEN);
+        triangle.setStroke(Color.GREEN);
+		return triangle;
+		
+	}
+	
+	
 	private void splitByCountry() {
 		europe = new ArrayList<Car>();
 		america = new ArrayList<Car>();
@@ -253,7 +269,7 @@ public class Controller {
 		
 			ObservableList<String> items = FXCollections.observableArrayList();
 			ObservableList<String> origins = FXCollections.observableArrayList();
-		    String csvFile = "C:\\Users\\User\\eclipse-workspace\\Ue3\\cars.csv";
+		    String csvFile = "/Users/jannikschmitz/Downloads/cars.csv";
 	        String line = "";
 	        String cvsSplitBy = ";";
 
@@ -262,7 +278,6 @@ public class Controller {
 	            int i = 0;
 	            while ((line = br.readLine()) != null) {
 
-	                // use comma as separator
 	               String[] s = line.split(cvsSplitBy)[0].split("\\t");
 	             
 	               	if(i > 0) {
