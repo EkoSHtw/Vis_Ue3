@@ -72,9 +72,9 @@
     			<Label text="Size: Cylinders"/>
     		</VBox>
     		<VBox>
-   				<Label text="Min Acceleration"/>
+   				<Label text="Max Acceleration"/>
     			<Slider fx:id="minSliderX"/>
-    			<Label text="Max Acceleration"/>
+    			<Label text="Min Acceleration"/>
     			<Slider fx:id="maxSliderX"/>
    
     			

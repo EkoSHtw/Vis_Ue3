@@ -658,7 +658,7 @@ public class Controller {
 		int g = awtColor.getGreen();
 		int b = awtColor.getBlue();
 		int a = awtColor.getAlpha();
-		double opacity = 1- ((a - (acceleration * 10)) / 255.0);
+		double opacity = (a - (acceleration * 10)) / 255.0;
 		javafx.scene.paint.Color fxColor = javafx.scene.paint.Color.rgb(r, g, b, opacity);
 		return fxColor;
 	}
