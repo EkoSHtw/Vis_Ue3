@@ -55,6 +55,10 @@
 				<Label fx:id="textFilterYear" text="All"/>
     		</HBox>
     		<HBox>
+				<Label text="Years"/>
+    			<Slider fx:id="yearSlider"/>
+    		</HBox>
+    		<HBox>
     			<MenuButton fx:id="axisOptions" text="Axis Option"/>
     			<Label fx:id="textFilterAxis" text="Consumption/Weight"/>
     		</HBox>
@@ -78,10 +82,10 @@
     			<Label text="Max Y-Axis Slider"/>
     			<Slider fx:id="maxSliderY"/>
     			
-    			<Label text="Min Year Slider"/>
+    			<!--<Label text="Min Year Slider"/>
     			<Slider fx:id="minSliderYear"/>
     			<Label text="Max Year Slider"/>
-    			<Slider fx:id="maxSliderYear"/>
+    			<Slider fx:id="maxSliderYear"/>-->
     		</VBox>
 		</children>
 	</VBox>
