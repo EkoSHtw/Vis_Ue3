@@ -65,15 +65,14 @@ public class Controller {
 
 	public MenuButton filterOptions;
 	public MenuButton filterOptionsManufacturer;
-	public MenuButton filterOptionsYear;
 	public MenuButton axisOptions;
 
 	public Slider minSliderX;
 	public Slider maxSliderX;
 	public Slider minSliderY;
 	public Slider maxSliderY;
-	//public Slider minSliderYear;
-	//public Slider maxSliderYear;
+	public Slider minSliderYear;
+	public Slider maxSliderYear;
 	
 	public NumberAxis xAxis;
 	public NumberAxis yAxis;
@@ -116,8 +115,10 @@ public class Controller {
 	private double minConsumption;
 	private double maxHorsePower = 0;
 	private double minHorsePower = 0;
-	//private int minYear = 70;
-	//private int maxYear = 82;
+	private double minAcceleration = 1000;
+	private double maxAcceleration = 0;
+	private int minYear = 70;
+	private int maxYear = 82;
 	
 	
 	public void initialize() {		          
@@ -125,7 +126,7 @@ public class Controller {
 	    scatterChart.setAnimated(false);
 	    scatterChart.setLegendVisible(false);
 	    readCSV();
-	    splitByCountry();
+	    
 	    
 	      
 	    yearSlider.setMin(69);
@@ -177,22 +178,64 @@ public class Controller {
 			reload();
 	    });
 
-		/*
+		
 		minSliderYear.setMin(minYear);
 		minSliderYear.setMax(maxYear);
 		minSliderYear.valueProperty().addListener((observable, oldValue, newValue) -> {
 	           reload();
 	    });
 		
+
 		maxSliderYear.setMin(minYear);
 		maxSliderYear.setMax(maxYear);
 		maxSliderYear.valueProperty().setValue(maxYear);
 		maxSliderYear.valueProperty().addListener((observable, oldValue, newValue) -> {
 	           reload();
 	    });
-	    
-	    */
 		
+		
+		minSliderYear.setBlockIncrement(1);
+		minSliderYear.setMajorTickUnit(1);
+		minSliderYear.setMinorTickCount(0);
+		minSliderYear.setShowTickMarks(true);
+		minSliderYear.setShowTickLabels(true);
+		minSliderYear.setSnapToTicks(true);
+
+		maxSliderYear.setBlockIncrement(1);
+		maxSliderYear.setMajorTickUnit(1);
+		maxSliderYear.setMinorTickCount(0);
+		maxSliderYear.setShowTickMarks(true);
+		maxSliderYear.setShowTickLabels(true);
+		maxSliderYear.setSnapToTicks(true);
+		
+		
+		maxSliderX.setBlockIncrement(1);
+		maxSliderX.setMajorTickUnit(1);
+		maxSliderX.setMinorTickCount(0);
+		maxSliderX.setShowTickMarks(true);
+		maxSliderX.setShowTickLabels(true);
+		maxSliderX.setSnapToTicks(true);
+		
+		maxSliderX.valueProperty().setValue(maxAcceleration);
+		maxSliderX.valueProperty().addListener((observable, oldValue, newValue) -> {
+	           reload();
+	    });
+	    
+		
+		minSliderX.setBlockIncrement(1);
+		minSliderX.setMajorTickUnit(1);
+		minSliderX.setMinorTickCount(0);
+		minSliderX.setShowTickMarks(true);
+		minSliderX.setShowTickLabels(true);
+		minSliderX.setSnapToTicks(true);
+		
+		minSliderX.valueProperty().setValue(minAcceleration);
+		minSliderX.valueProperty().addListener((observable, oldValue, newValue) -> {
+	           reload();
+	    });
+		
+		
+		splitByCountry();
 		
 		MenuItem filterItem1 = new MenuItem("Europe");
 		filterItem1.setOnAction(event -> {
@@ -268,41 +311,21 @@ public class Controller {
 		scatterChart.getXAxis().setLabel(labelConsumption);
 		scatterChart.getYAxis().setLabel(labelWeight);
 		
-		double yMin = 3000;
-		double xMin = 3000;
-		double yMax = 0;
-		double xMax = 0;
 		//xAxis.setLowerBound(minSliderX.valueProperty().intValue());
 		//yAxis.setLowerBound(minSliderY.valueProperty().intValue());
-		
+//		minSliderY.setMin(minWeight);
+//		minSliderY.setMax(maxWeight);
+//		maxSliderY.setMax(maxConsumption);
+//		maxSliderY.setMin(max);
 
 		for (Car c : europe) {
 			
-			double consumptionPercent = (100/maxConsumption * c.getMpg());
-			double weightPercent = (100/maxWeight * c.getWeight());
+	
 			if ((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer()))
-					&& (filteredYear == 0 || filteredYear == c.getModelYear()))
-					/* && (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())) */ {
-						/*
-						 	&& (consumptionPercent >= minSliderX.valueProperty().doubleValue() && consumptionPercent <= maxSliderX.valueProperty().doubleValue())
-					&& (weightPercent >= minSliderY.valueProperty().doubleValue() && weightPercent <= maxSliderY.valueProperty().doubleValue())
-						 */
-				//if(c.getMpg() > 0 && c.getWeight() > 0) {
-				/*if(c.getMpg() < xMin) {
-					xMin = c.getMpg(); 
-				}
-				if(c.getMpg() > xMax) {
-					xMin = c.getMpg(); 
-				}
-				
-				if(c.getWeight() < yMin) {
-					yMin = c.getWeight(); 
-				}
-				
-				if(c.getWeight() > yMax) {
-					xMax = c.getWeight(); 
-				}
-				*/  
+					&& (filteredYear == 0 || filteredYear == c.getModelYear())
+					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
+					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					){	
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getWeight());
 
 				String colorString = new String();
@@ -314,7 +337,7 @@ public class Controller {
 				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
 
 				dataSeriesEurope.getData().add(data);
-				//}
+				
 			}
 		}
 		
@@ -323,11 +346,20 @@ public class Controller {
 		yAxis.setLowerBound(yMin);
 		xAxis.setUpperBound(xMax);
 		yAxis.setUpperBound(yMax);
+		
 		*/
 		for (Car c : japan) {
 			if ((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer()))
-					&& (filteredYear == 0 || filteredYear == c.getModelYear()))
-					/* && (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())) */ {
+					&& (filteredYear == 0 || filteredYear == c.getModelYear())
+					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
+					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					){
+				
+				/*
+				  && (c.getMpg() >= minSliderX.valueProperty().doubleValue() && c.getMpg() <= maxSliderX.valueProperty().doubleValue())
+					&& (c.getWeight() >= minSliderY.valueProperty().doubleValue() && c.getWeight() <= maxSliderY.valueProperty().doubleValue())
+
+				 */
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getWeight());
 
 				String colorString = new String();
@@ -344,8 +376,10 @@ public class Controller {
 
 		for (Car c : america) {
 			if ((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer()))
-					&& (filteredYear == 0 || filteredYear == c.getModelYear()))
-					/* && (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())) */ {
+				&& (filteredYear == 0 || filteredYear == c.getModelYear())
+				&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
+				&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+			    ){
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getWeight());
 
 				String colorString = new String();
@@ -389,8 +423,10 @@ public class Controller {
 
 		for (Car c : europe) {
 			if ((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer()))
-					&& (filteredYear == 0 || filteredYear == c.getModelYear()))
-					/* && (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())) */ {
+					&& (filteredYear == 0 || filteredYear == c.getModelYear())
+					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
+					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					){
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 
 				String colorString = new String();
@@ -405,8 +441,10 @@ public class Controller {
 
 		for (Car c : japan) {
 			if ((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer()))
-					&& (filteredYear == 0 || filteredYear == c.getModelYear()))
-					/* && (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())) */ {
+					&& (filteredYear == 0 || filteredYear == c.getModelYear())
+					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
+					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue()) 
+					){
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 
 				String colorString = new String();
@@ -421,8 +459,10 @@ public class Controller {
 
 		for (Car c : america) {
 			if ((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer()))
-					&& (filteredYear == 0 || filteredYear == c.getModelYear()))
-					/* && (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())) */ {
+					&& (filteredYear == 0 || filteredYear == c.getModelYear())
+					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
+					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					) {
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 
 				String colorString = new String();
@@ -460,8 +500,10 @@ public class Controller {
 
 		for (Car c : europe) {
 			if ((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer()))
-					&& (filteredYear == 0 || filteredYear == c.getModelYear()))
-					/* && (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())) */ {
+					&& (filteredYear == 0 || filteredYear == c.getModelYear())
+					 && (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
+					 && (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue()) 
+					){
 				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 
 				String colorString = new String();
@@ -476,8 +518,10 @@ public class Controller {
 
 		for (Car c : japan) {
 			if ((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer()))
-					&& (filteredYear == 0 || filteredYear == c.getModelYear()))
-					/* && (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())) */{
+					&& (filteredYear == 0 || filteredYear == c.getModelYear())
+					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
+					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					){
 				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 
 				String colorString = new String();
@@ -492,8 +536,10 @@ public class Controller {
 
 		for (Car c : america) {
 			if ((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer()))
-					&& (filteredYear == 0 || filteredYear == c.getModelYear()))
-					/*&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue()))*/ {
+					&& (filteredYear == 0 || filteredYear == c.getModelYear())
+					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
+					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					) {
 				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 
 				String colorString = new String();
@@ -610,7 +656,8 @@ public class Controller {
 		
 			ObservableList<String> items = FXCollections.observableArrayList();
 			ObservableList<String> origins = FXCollections.observableArrayList();
-		    String csvFile = "/Users/jannikschmitz/Downloads/cars.csv";
+		    String csvFile = "C:\\Users\\User\\eclipse-workspace\\Ue3\\cars.csv";
+		    //C:\\Users\\User\\eclipse-workspace\\Ue3\\cars.csv
 	        String line = "";
 	        String cvsSplitBy = ";";
 	        
@@ -628,7 +675,6 @@ public class Controller {
      				textFilterYear.setText("All");
      				reload();
      			});
-     		filterOptionsYear.getItems().add(filterItem0);
     	    
      		
      	// Adding Listener to value property.
@@ -679,6 +725,7 @@ public class Controller {
 					newCar.setMpg(mpgToLiterPro100Kilometer((Double.parseDouble((!s[2].equals("NA") ? s[2] : "0.0"))))); //* 0.425144
 					newCar.setWeight((Double.parseDouble((!s[6].equals("NA") ? s[6] : "0")) * 0.453592));
 					
+					/*
 					if(newCar.getWeight() > maxWeight) {
 						maxWeight = newCar.getWeight();
 					}
@@ -701,6 +748,13 @@ public class Controller {
 					
 					if(newCar.getMpg() < minConsumption) {
 						minConsumption = newCar.getMpg();
+					}*/
+					
+					if(newCar.getAcceleration() < minAcceleration) {
+						minAcceleration = newCar.getAcceleration();
+					}
+					if(newCar.getAcceleration() > maxAcceleration) {
+						maxAcceleration = newCar.getAcceleration();
 					}
 					
 					if (!manufacturerList.contains(newCar.getManufacturer())) {
@@ -722,12 +776,16 @@ public class Controller {
 							textFilterYear.setText(filterItem2.getText());
 							reload();
 						});
-						filterOptionsYear.getItems().add(filterItem2);
 					}
 					carList.add(newCar);
 				}
 				i++;
+				
 			}
+			minSliderX.setMax(maxAcceleration);
+			minSliderX.setMin(minAcceleration);
+			maxSliderX.setMin(minAcceleration);
+			maxSliderX.setMax(maxAcceleration);
 
 		} catch (IOException e) {
 			e.printStackTrace();

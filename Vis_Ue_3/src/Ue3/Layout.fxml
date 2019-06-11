@@ -24,7 +24,7 @@
 <?import javafx.scene.control.Slider?>
 
 
-<AnchorPane prefHeight="600.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Ue3.Controller">
+<AnchorPane prefHeight="650.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Ue3.Controller">
 	<children>
 
 		<Pane fx:id="chartContainer" layoutY="0"  layoutX="300.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
@@ -40,7 +40,7 @@
          </children>
   			
       	</Pane>
-	<VBox layoutX="100.0" layoutY="14.0"  spacing="20" prefHeight="200.0" prefWidth="220.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
+	<VBox layoutX="100.0" layoutY="10.0"  spacing="20" prefHeight="200.0" prefWidth="220.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
 		<children>
 			<HBox>
 				<MenuButton fx:id="filterOptions" text="Filter Option Country"/>
@@ -72,20 +72,16 @@
     			<Label text="Size: Cylinders"/>
     		</VBox>
     		<VBox>
-    			<Label text="Min X-Axis Slider"/>
+   				<Label text="Min Acceleration"/>
     			<Slider fx:id="minSliderX"/>
-    			<Label text="Max X-Axis Slider"/>
+    			<Label text="Max Acceleration"/>
     			<Slider fx:id="maxSliderX"/>
-    		
-    			<Label text="Min Y-Axis Slider"/>
-    			<Slider fx:id="minSliderY"/>
-    			<Label text="Max Y-Axis Slider"/>
-    			<Slider fx:id="maxSliderY"/>
+   
     			
-    			<!--<Label text="Min Year Slider"/>
+    			<Label text="Min Year Slider"/>
     			<Slider fx:id="minSliderYear"/>
     			<Label text="Max Year Slider"/>
-    			<Slider fx:id="maxSliderYear"/>-->
+    			<Slider fx:id="maxSliderYear"/>
     		</VBox>
 		</children>
 	</VBox>
