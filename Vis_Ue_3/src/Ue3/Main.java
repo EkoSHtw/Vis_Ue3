@@ -18,7 +18,7 @@ public class Main extends Application {
     	    
           Scene scene = new Scene(root, 1500, 650);
       
-          primaryStage.setTitle("FXML Welcome");
+          primaryStage.setTitle("Vis UE 3");
           primaryStage.setScene(scene);
           primaryStage.show();
     }

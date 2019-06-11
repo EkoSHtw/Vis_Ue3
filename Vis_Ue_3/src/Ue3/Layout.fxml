@@ -105,13 +105,12 @@
 		</children>
 	</VBox>
 	
-	<VBox layoutX="870.0" layoutY="100.0"  spacing="20" prefHeight="180.0" prefWidth="400.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
+	<VBox layoutX="820.0" layoutY="100.0"  spacing="20" prefHeight="180.0" prefWidth="400.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
 		<children>
 			<Label text="Min Displacement"/>
     		<Slider fx:id="minSliderDisplacement"/>
     		<Label text="Max Displacement"/>
     		<Slider fx:id="maxSliderDisplacement"/>
-    		
     		
 			<Label text="Min Cylinder"/>
     		<Slider fx:id="minSliderCylinder"/>

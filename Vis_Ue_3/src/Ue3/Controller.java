@@ -605,8 +605,8 @@ public class Controller {
 					&& (filteredYear == 0 || filteredYear == c.getModelYear())
 					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
 					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
-					&& (c.getDisplacement() >= minDisplacement && c.getDisplacement() <= maxDisplacement)
-					&& (c.getCylinders() >= minCylinders && c.getCylinders() <= maxCylinders)
+					&& (c.getDisplacement() >= minSliderDisplacement.valueProperty().doubleValue() && c.getDisplacement() <= maxSliderDisplacement.valueProperty().doubleValue())
+					&& (c.getCylinders() >= minSliderCylinder.valueProperty().doubleValue() && c.getCylinders() <= maxSliderCylinder.valueProperty().doubleValue())
 					) {
 				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 
@@ -631,8 +631,8 @@ public class Controller {
 
 		// Create the Triangle
 		Polygon triangle = new Polygon();
-		triangle.getPoints().addAll(6.25 * cylinderToSize(cylinders), 0.0, 0.0, 6.25 * cylinderToSize(cylinders),
-				12.5 * cylinderToSize(cylinders), 6.25 * cylinderToSize(cylinders));
+		triangle.getPoints().addAll(7.0 * cylinderToSize(cylinders), 0.0, 0.0, 7.0 * cylinderToSize(cylinders),
+				14 * cylinderToSize(cylinders), 7.0 * cylinderToSize(cylinders));
 		triangle.setFill(color);
 		// triangle.setStroke(Color.BLACK);
 		return triangle;
