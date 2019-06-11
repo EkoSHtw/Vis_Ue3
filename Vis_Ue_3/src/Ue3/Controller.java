@@ -149,9 +149,7 @@ public class Controller {
                 if (n < 79.5) return "79";
                 if (n < 81.5) return "81";
                 
-                
-                
-
+               
                 return "all";
             }
 
@@ -642,6 +640,7 @@ public class Controller {
      	        	if(newValue.doubleValue() == 69.00) {
      	        		
      	        		filteredYear = 0;
+     	        		textFilterYear.setText("All");
      	        		reload();
      	        		
      	        	}
@@ -649,6 +648,7 @@ public class Controller {
      	        	else {
      	 
      	        	filteredYear = newValue.intValue();
+     	        	textFilterYear.setText(newValue.toString());
      	        	reload();
      	        	
      	        	}
