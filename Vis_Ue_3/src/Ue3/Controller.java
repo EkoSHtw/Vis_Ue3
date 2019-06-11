@@ -30,6 +30,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -80,7 +82,7 @@ public class Controller {
 	public ScatterChart<Number, Number> scatterChart;
 
 	private String labelWeight = "Weight in kg";
-	private String labelConsumption = "Consumption in l/km";
+	private String labelConsumption = "Consumption in l/100km";
 	private String labelHorsepower = "Horsepower";
 
 	public Pane chartContainer;
@@ -300,7 +302,7 @@ public class Controller {
 				if(c.getWeight() > yMax) {
 					xMax = c.getWeight(); 
 				}
-				*/
+				*/  
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getWeight());
 
 				String colorString = new String();
@@ -674,7 +676,7 @@ public class Controller {
 					newCar.setDisplacement((Double.parseDouble((!s[4].equals("NA") ? s[4] : "0.0")) * 16.387));
 					newCar.setHorsepower(Integer.parseInt((!s[5].equals("NA") ? s[5] : "0")));
 					newCar.setModelYear(Integer.parseInt((!s[8].equals("NA") ? s[8] : "0")));
-					newCar.setMpg((Double.parseDouble((!s[2].equals("NA") ? s[2] : "0.0")) * 0.425144));
+					newCar.setMpg(mpgToLiterPro100Kilometer((Double.parseDouble((!s[2].equals("NA") ? s[2] : "0.0"))))); //* 0.425144
 					newCar.setWeight((Double.parseDouble((!s[6].equals("NA") ? s[6] : "0")) * 0.453592));
 					
 					if(newCar.getWeight() > maxWeight) {
@@ -749,17 +751,40 @@ public class Controller {
 	}
 
 	public void setupBottomView(Car c) {
+		
+		DecimalFormat df = new DecimalFormat("#.##");
+		df.setRoundingMode(RoundingMode.CEILING);
+		
 		carLabel.setText("Model: " + c.getName() + "       ");
 		modelYearLabel.setText("Model Year: " + c.getModelYear());
 		manufacturerLabel.setText("Manufacturer: " + c.getManufacturer());
-		accelerationLabel.setText("Acceleration: " + (c.getAcceleration() * 1.609) + " m/s");
-		displacementLabel.setText("Displacement: " + c.getDisplacement() + " ccm");
+		accelerationLabel.setText("Acceleration: " + (df.format(c.getAcceleration())) + " s (0 to 100km/h)");
+		displacementLabel.setText("Displacement: " + df.format(c.getDisplacement()) + " ccm");
 		countryLabel.setText("Origin: " + c.getOrigin());
 		cylinderLabel.setText("Cylinder " + c.getCylinders());
-		consumptionLabel.setText("Consumption: " + c.getMpg() + " l/km");
+		consumptionLabel.setText("Consumption: " + df.format(c.getMpg()) + " l/100km");
 		horsepowerLabel.setText("Horsepower: " + c.getHorsepower());
-		weightLabel.setText("Weight:" + c.getWeight() + " kg");
+		weightLabel.setText("Weight: " + df.format(c.getWeight()) + " kg");
 
+	}
+	
+	public double mpgToLiterPro100Kilometer(double mpg) {
+		
+		double result;
+		
+		
+		double kilometer = mpg * 1.6;
+		double sub = 100/kilometer;
+		result = 3.7 * sub;
+		
+		if(mpg == 0.0) {
+			
+			result = 0.0;
+			
+		}
+		
+		return result;
+		
 	}
 
 }
