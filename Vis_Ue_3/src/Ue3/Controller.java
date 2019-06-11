@@ -65,6 +65,7 @@ public class Controller {
 
 	public MenuButton filterOptions;
 	public MenuButton filterOptionsManufacturer;
+	public MenuButton filterOptionsYear;
 	public MenuButton axisOptions;
 
 	public Slider minSliderX;
@@ -73,6 +74,11 @@ public class Controller {
 	public Slider maxSliderY;
 	public Slider minSliderYear;
 	public Slider maxSliderYear;
+	public Slider minSliderDisplacement;
+	public Slider maxSliderDisplacement;
+	public Slider minSliderCylinder;
+	public Slider maxSliderCylinder;
+	
 	
 	public NumberAxis xAxis;
 	public NumberAxis yAxis;
@@ -119,6 +125,10 @@ public class Controller {
 	private double maxAcceleration = 0;
 	private int minYear = 70;
 	private int maxYear = 82;
+	private double minDisplacement = 3000;
+	private double maxDisplacement = 0;
+	private int maxCylinders = 0;
+	private int minCylinders = 100;
 	
 	
 	public void initialize() {		          
@@ -228,12 +238,55 @@ public class Controller {
 		minSliderX.setShowTickMarks(true);
 		minSliderX.setShowTickLabels(true);
 		minSliderX.setSnapToTicks(true);
-		
 		minSliderX.valueProperty().setValue(minAcceleration);
 		minSliderX.valueProperty().addListener((observable, oldValue, newValue) -> {
 	           reload();
 	    });
 		
+		
+		minSliderDisplacement.setBlockIncrement(1);
+		minSliderDisplacement.setMajorTickUnit(150);
+		minSliderDisplacement.setMinorTickCount(0);
+		minSliderDisplacement.setShowTickMarks(true);
+		minSliderDisplacement.setShowTickLabels(true);
+		minSliderDisplacement.setSnapToTicks(true);
+		minSliderDisplacement.valueProperty().setValue(minDisplacement);
+		minSliderDisplacement.valueProperty().addListener((observable, oldValue, newValue) -> {
+	           reload();
+	    });
+		
+		maxSliderDisplacement.setBlockIncrement(1);
+		maxSliderDisplacement.setMajorTickUnit(150);
+		maxSliderDisplacement.setMinorTickCount(0);
+		maxSliderDisplacement.setShowTickMarks(true);
+		maxSliderDisplacement.setShowTickLabels(true);
+		maxSliderDisplacement.setSnapToTicks(true);
+		maxSliderDisplacement.valueProperty().setValue(maxDisplacement);
+		maxSliderDisplacement.valueProperty().addListener((observable, oldValue, newValue) -> {
+	           reload();
+	    });
+		
+		minSliderCylinder.setBlockIncrement(1);
+		minSliderCylinder.setMajorTickUnit(1);
+		minSliderCylinder.setMinorTickCount(0);
+		minSliderCylinder.setShowTickMarks(true);
+		minSliderCylinder.setShowTickLabels(true);
+		minSliderCylinder.setSnapToTicks(true);
+		minSliderCylinder.valueProperty().setValue(minCylinders);
+		minSliderCylinder.valueProperty().addListener((observable, oldValue, newValue) -> {
+	           reload();
+	    });
+		
+		maxSliderCylinder.setBlockIncrement(1);
+		maxSliderCylinder.setMajorTickUnit(1);
+		maxSliderCylinder.setMinorTickCount(0);
+		maxSliderCylinder.setShowTickMarks(true);
+		maxSliderCylinder.setShowTickLabels(true);
+		maxSliderCylinder.setSnapToTicks(true);
+		maxSliderCylinder.valueProperty().setValue(maxCylinders);
+		maxSliderCylinder.valueProperty().addListener((observable, oldValue, newValue) -> {
+	           reload();
+	    });
 		
 		splitByCountry();
 		
@@ -325,6 +378,8 @@ public class Controller {
 					&& (filteredYear == 0 || filteredYear == c.getModelYear())
 					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
 					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					&& (c.getDisplacement() >= minSliderDisplacement.valueProperty().doubleValue() && c.getDisplacement() <= maxSliderDisplacement.valueProperty().doubleValue())
+					&& (c.getCylinders() >= minSliderCylinder.valueProperty().doubleValue() && c.getCylinders() <= maxSliderCylinder.valueProperty().doubleValue())
 					){	
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getWeight());
 
@@ -353,6 +408,8 @@ public class Controller {
 					&& (filteredYear == 0 || filteredYear == c.getModelYear())
 					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
 					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					&& (c.getDisplacement() >= minSliderDisplacement.valueProperty().doubleValue() && c.getDisplacement() <= maxSliderDisplacement.valueProperty().doubleValue())
+					&& (c.getCylinders() >= minSliderCylinder.valueProperty().doubleValue() && c.getCylinders() <= maxSliderCylinder.valueProperty().doubleValue())
 					){
 				
 				/*
@@ -379,6 +436,8 @@ public class Controller {
 				&& (filteredYear == 0 || filteredYear == c.getModelYear())
 				&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
 				&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+				&& (c.getDisplacement() >= minSliderDisplacement.valueProperty().doubleValue() && c.getDisplacement() <= maxSliderDisplacement.valueProperty().doubleValue())
+				&& (c.getCylinders() >= minSliderCylinder.valueProperty().doubleValue() && c.getCylinders() <= maxSliderCylinder.valueProperty().doubleValue())
 			    ){
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getWeight());
 
@@ -386,9 +445,6 @@ public class Controller {
 
 				colorString = toHex(c.getManufacturer());
 
-				System.out.print(c.getCylinders());
-
-				System.out.print(c.getAcceleration());
 
 				data.setNode(triangle(colorConverter(colorString, c.getAcceleration()), c.getCylinders()));
 				data.getNode().setOnMouseClicked(e -> setupBottomView(c));
@@ -426,6 +482,8 @@ public class Controller {
 					&& (filteredYear == 0 || filteredYear == c.getModelYear())
 					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
 					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					&& (c.getDisplacement() >= minSliderDisplacement.valueProperty().doubleValue() && c.getDisplacement() <= maxSliderDisplacement.valueProperty().doubleValue())
+					&& (c.getCylinders() >= minSliderCylinder.valueProperty().doubleValue() && c.getCylinders() <= maxSliderCylinder.valueProperty().doubleValue())
 					){
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 
@@ -444,6 +502,8 @@ public class Controller {
 					&& (filteredYear == 0 || filteredYear == c.getModelYear())
 					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
 					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue()) 
+					&& (c.getDisplacement() >= minSliderDisplacement.valueProperty().doubleValue() && c.getDisplacement() <= maxSliderDisplacement.valueProperty().doubleValue())
+					&& (c.getCylinders() >= minSliderCylinder.valueProperty().doubleValue() && c.getCylinders() <= maxSliderCylinder.valueProperty().doubleValue())
 					){
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 
@@ -462,6 +522,8 @@ public class Controller {
 					&& (filteredYear == 0 || filteredYear == c.getModelYear())
 					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
 					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					&& (c.getDisplacement() >= minSliderDisplacement.valueProperty().doubleValue() && c.getDisplacement() <= maxSliderDisplacement.valueProperty().doubleValue())
+					&& (c.getCylinders() >= minSliderCylinder.valueProperty().doubleValue() && c.getCylinders() <= maxSliderCylinder.valueProperty().doubleValue())
 					) {
 				XYChart.Data data = new XYChart.Data(c.getMpg(), c.getHorsepower());
 
@@ -501,8 +563,10 @@ public class Controller {
 		for (Car c : europe) {
 			if ((displayedManufacturer.equals(ALLMANUFACTURER) || displayedManufacturer.equals(c.getManufacturer()))
 					&& (filteredYear == 0 || filteredYear == c.getModelYear())
-					 && (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
-					 && (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue()) 
+					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
+					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue()) 
+					&& (c.getDisplacement() >= minSliderDisplacement.valueProperty().doubleValue() && c.getDisplacement() <= maxSliderDisplacement.valueProperty().doubleValue())
+					&& (c.getCylinders() >= minSliderCylinder.valueProperty().doubleValue() && c.getCylinders() <= maxSliderCylinder.valueProperty().doubleValue())
 					){
 				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 
@@ -521,6 +585,8 @@ public class Controller {
 					&& (filteredYear == 0 || filteredYear == c.getModelYear())
 					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
 					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					&& (c.getDisplacement() >= minSliderDisplacement.valueProperty().doubleValue() && c.getDisplacement() <= maxSliderDisplacement.valueProperty().doubleValue())
+					&& (c.getCylinders() >= minSliderCylinder.valueProperty().doubleValue() && c.getCylinders() <= maxSliderCylinder.valueProperty().doubleValue())
 					){
 				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 
@@ -539,6 +605,8 @@ public class Controller {
 					&& (filteredYear == 0 || filteredYear == c.getModelYear())
 					&& (c.getModelYear() >= minSliderYear.valueProperty().intValue() && c.getModelYear() <= maxSliderYear.valueProperty().intValue())
 					&& (c.getAcceleration() >= minSliderX.valueProperty().doubleValue() && c.getAcceleration() <= maxSliderX.valueProperty().doubleValue())
+					&& (c.getDisplacement() >= minDisplacement && c.getDisplacement() <= maxDisplacement)
+					&& (c.getCylinders() >= minCylinders && c.getCylinders() <= maxCylinders)
 					) {
 				XYChart.Data data = new XYChart.Data(c.getHorsepower(), c.getWeight());
 
@@ -675,6 +743,7 @@ public class Controller {
      				textFilterYear.setText("All");
      				reload();
      			});
+     			filterOptionsYear.getItems().add(filterItem0);
     	    
      		
      	// Adding Listener to value property.
@@ -708,6 +777,9 @@ public class Controller {
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
 
 			int i = 0;
+			
+			
+			
 			while ((line = br.readLine()) != null) {
 
 				String[] s = line.split(cvsSplitBy)[0].split("\\t");
@@ -757,6 +829,20 @@ public class Controller {
 						maxAcceleration = newCar.getAcceleration();
 					}
 					
+					if(newCar.getDisplacement() < minDisplacement) {
+						minDisplacement = newCar.getAcceleration();
+					}
+					if(newCar.getDisplacement() > maxDisplacement) {
+						maxDisplacement = newCar.getDisplacement();
+					}
+					if(newCar.getCylinders() > maxCylinders) {
+						maxCylinders = newCar.getCylinders();
+					}
+					
+					if(newCar.getCylinders() < minCylinders) {
+						minCylinders = newCar.getCylinders();
+					}
+					
 					if (!manufacturerList.contains(newCar.getManufacturer())) {
 						manufacturerList.add(newCar.getManufacturer());
 						MenuItem filterItem1 = new MenuItem(newCar.getManufacturer());
@@ -776,6 +862,7 @@ public class Controller {
 							textFilterYear.setText(filterItem2.getText());
 							reload();
 						});
+						filterOptionsYear.getItems().add(filterItem2);
 					}
 					carList.add(newCar);
 				}
@@ -786,6 +873,15 @@ public class Controller {
 			minSliderX.setMin(minAcceleration);
 			maxSliderX.setMin(minAcceleration);
 			maxSliderX.setMax(maxAcceleration);
+			minSliderDisplacement.setMax(maxDisplacement);
+			minSliderDisplacement.setMin(minDisplacement);
+			maxSliderDisplacement.setMax(maxDisplacement);
+			maxSliderDisplacement.setMin(minDisplacement);
+			minSliderCylinder.setMax(maxCylinders);
+			minSliderCylinder.setMin(minCylinders);
+			maxSliderCylinder.setMax(maxCylinders);
+			maxSliderCylinder.setMin(minCylinders);
+			
 
 		} catch (IOException e) {
 			e.printStackTrace();

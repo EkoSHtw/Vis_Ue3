@@ -24,7 +24,7 @@
 <?import javafx.scene.control.Slider?>
 
 
-<AnchorPane prefHeight="650.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Ue3.Controller">
+<AnchorPane prefHeight="650.0" prefWidth="1550.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Ue3.Controller">
 	<children>
 
 		<Pane fx:id="chartContainer" layoutY="0"  layoutX="300.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
@@ -102,6 +102,21 @@
     			<Label fx:id="weightLabel" text="Weight "/>
     			<Label fx:id="displacementLabel" text="Displacement"/>
     		</VBox>
+		</children>
+	</VBox>
+	
+	<VBox layoutX="870.0" layoutY="100.0"  spacing="20" prefHeight="180.0" prefWidth="400.0" style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;" >
+		<children>
+			<Label text="Min Displacement"/>
+    		<Slider fx:id="minSliderDisplacement"/>
+    		<Label text="Max Displacement"/>
+    		<Slider fx:id="maxSliderDisplacement"/>
+    		
+    		
+			<Label text="Min Cylinder"/>
+    		<Slider fx:id="minSliderCylinder"/>
+    		<Label text="Max Cylinder"/>
+    		<Slider fx:id="maxSliderCylinder"/>
 		</children>
 	</VBox>
    
